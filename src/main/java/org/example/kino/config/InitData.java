@@ -31,8 +31,6 @@ public class InitData implements CommandLineRunner {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private SaleRepository saleRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -113,27 +111,17 @@ public class InitData implements CommandLineRunner {
         Booking b1 = new Booking();
         b1.setUser(u1);
         b1.setShow(st1);
-        b1.setSeatID(15);
+        b1.setSeatRow(2);
+        b1.setSeatColumn(2);
         bookingRepository.save(b1);
 
         Booking b2 = new Booking();
         b2.setUser(u1);
         b2.setShow(st2);
-        b2.setSeatID(20);
+        b2.setSeatRow(1);
+        b2.setSeatColumn(1);
         bookingRepository.save(b2);
 
-        // --- Create Sales ---
-        Sale sale1 = new Sale();
-        sale1.setSnack(snack1);
-        sale1.setEmployee(u2);
-        sale1.setDate(LocalDateTime.now());
-        saleRepository.save(sale1);
-
-        Sale sale2 = new Sale();
-        sale2.setSnack(snack2);
-        sale2.setEmployee(u2);
-        sale2.setDate(LocalDateTime.now());
-        saleRepository.save(sale2);
 
         System.out.println("✅ Initial Kino data loaded into database!");
     }
