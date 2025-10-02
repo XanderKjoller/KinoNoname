@@ -1,15 +1,77 @@
 package org.example.kino.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
+@Table(name = "Showtime") // Show is a reserved word in sql syntax thats why we use showtime instead
 public class Show {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int showID;
-    private int movieID;
+    @ManyToOne
+    @JoinColumn(name = "movieID")
+    private Movie movie;
+
     private int price;
-    private int roomID;
+
+    @ManyToOne
+    @JoinColumn(name = "roomID")
+    private Room room;
+
     private LocalDateTime period;
+
+    @OneToMany(mappedBy = "show")
+    private List<Booking> bookings;
+
+
+    public int getShowID() {
+        return showID;
+    }
+
+    public void setShowID(int showID) {
+        this.showID = showID;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public LocalDateTime getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(LocalDateTime period) {
+        this.period = period;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
 }
