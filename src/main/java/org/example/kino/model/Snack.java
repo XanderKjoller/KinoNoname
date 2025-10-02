@@ -15,8 +15,7 @@ public class Snack {
 
     private String image;
     private int price;
-    @OneToMany(mappedBy = "snack")
-    private List<Sale> sales;
+
 
     @OneToMany(mappedBy = "snack")
     private List<SnackReservation> snackReservations;
@@ -25,13 +24,7 @@ public class Snack {
         return snackID;
     }
 
-    public List<Sale> getSales() {
-        return sales;
-    }
 
-    public void setSales(List<Sale> sales) {
-        this.sales = sales;
-    }
 
     public List<SnackReservation> getSnackReservations() {
         return snackReservations;

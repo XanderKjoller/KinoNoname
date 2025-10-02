@@ -23,7 +23,7 @@ public class Show {
 
     private LocalDateTime period;
 
-    @OneToMany(mappedBy = "show")
+    @OneToMany(mappedBy = "show", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings;
 
 

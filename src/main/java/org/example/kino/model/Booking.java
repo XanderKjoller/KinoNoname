@@ -11,7 +11,8 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "showID")
     private Show show;
-    private int seatID;
+    private int seatRow;
+    private int seatColumn;
 
     @ManyToOne
     @JoinColumn(name = "userID")
@@ -53,13 +54,19 @@ public class Booking {
     }
 
 
-    public int getSeatID() {
-        return seatID;
+    public int getSeatRow() {
+        return seatRow;
     }
 
-    public void setSeatID(int seatID) {
-        this.seatID = seatID;
+    public void setSeatRow(int seatRow) {
+        this.seatRow = seatRow;
     }
 
+    public int getSeatColumn() {
+        return seatColumn;
+    }
 
+    public void setSeatColumn(int seatColumn) {
+        this.seatColumn = seatColumn;
+    }
 }

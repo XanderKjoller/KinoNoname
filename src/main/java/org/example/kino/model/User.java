@@ -1,5 +1,6 @@
 package org.example.kino.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,12 +18,12 @@ public class User {
 
     // Relations
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<Booking> bookings;
-
-    @OneToMany(mappedBy = "employee")
-    private List<Sale> sales;
+    
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<TimeSlot> timeSlots;
 
     public List<Booking> getBookings() {
@@ -33,13 +34,7 @@ public class User {
         this.bookings = bookings;
     }
 
-    public List<Sale> getSales() {
-        return sales;
-    }
 
-    public void setSales(List<Sale> sales) {
-        this.sales = sales;
-    }
 
     public List<TimeSlot> getTimeSlots() {
         return timeSlots;
