@@ -10,4 +10,5 @@ public class Booking {
     private int showID;
     private int seatID;
     private int userID;
+    private int userGame;
 }
