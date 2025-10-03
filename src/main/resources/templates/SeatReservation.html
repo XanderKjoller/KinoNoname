@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" href="../static/style.css">
+
+</head>
+<style>
+  .seat-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 sæder per række */
+    gap: 5px;
+    padding: 20px;
+    justify-content: center;
+    width: 50%;
+  }
+
+  .seat {
+
+    border: 1px solid #333;
+    aspect-ratio: 1;
+    width: 90%;
+    height: 90%;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: green;
+  }
+
+  .seat:hover {
+    background-color: #ccc;
+  }
+
+  .seat.selected {
+    background-color: white;
+  }
+
+</style>
+<body >
+<div style="display: flex; justify-content: space-between;">
+  <h1 id="title">Ternet Ninja 3</h1>
+  <h2 id="timeframe">16:30 - 18:01 Tir. 7 Okt.</h2>
+</div>
+<div style="display: flex; gap: 15px">
+  <p id="duration">1 hour 31 min</p>
+  <p id="age">Allowed for children over the age of 13</p>
+</div>
+<h1> Choose Seats</h1>
+<div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+  <h1 style="text-align: center; font-size: 2vw;">Screen</h1>
+  <div class="seat" style="height: 0.2vw; width: 30vw; background-color: white "></div>
+</div>
+
+<div style="display: flex; justify-content: center;">
+  <div id="seats" class="seat-grid">
+
+  </div>
+</div>
+
+</body>
+<script src="../js/seatReservation.js"></script>
+</html>
