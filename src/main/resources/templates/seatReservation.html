@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-  <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" th:href="@{style.css}" />
 
 </head>
 <style>
@@ -35,6 +35,9 @@
   .seat.selected {
     background-color: white;
   }
+  .seat.reserved {
+    background-color: red;
+  }
 
 </style>
 <body >
@@ -57,7 +60,6 @@
 
   </div>
 </div>
-
 </body>
-<script src="../js/seatReservation.js"></script>
+<script type="module" th:src="@{/js/seatReservation.js}"></script>
 </html>
