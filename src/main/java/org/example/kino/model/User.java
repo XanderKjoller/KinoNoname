@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "User")
@@ -21,7 +22,7 @@ public class User {
     private String username;
     private String password;
     private String authority;
-    private int bookingID;
+
 
     // Relations
     @OneToMany(mappedBy = "user")
@@ -30,6 +31,15 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<TimeSlot> timeSlots;
+
+    public User(String username, String password, String authority) {
+        this.username = username;
+        this.password = password;
+        this.authority = authority;
+    }
+
+    public User() {
+    }
 
     public List<Booking> getBookings() {
         return bookings;
@@ -81,12 +91,15 @@ public class User {
         this.authority = authority;
     }
 
-    public int getBookingID() {
-        return bookingID;
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof User user)) return false;
+        return getUserID() == user.getUserID() && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getAuthority(), user.getAuthority());
     }
 
-    public void setBookingID(int bookingID) {
-        this.bookingID = bookingID;
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserID(), getUsername(), getPassword(), getAuthority());
     }
 }
 
