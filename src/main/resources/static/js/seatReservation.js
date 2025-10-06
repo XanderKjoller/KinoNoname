@@ -86,7 +86,7 @@ async function saveSeatReservation(seatReservation) {
 async function deleteSeatReservation(seatReservation){
     const [body, status] = await postObjectAsJson(window.location.origin + "/DeleteSeat", seatReservation, "DELETE");
     //alert(JSON.stringify(body));
-    console.log(JSON.stringify(body))
+    //console.log(JSON.stringify(body))
 }
 
 fetchReservedSeats().then(r => {console.log("worked")})

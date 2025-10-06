@@ -44,13 +44,18 @@ public class SeatReservationRestController {
             return new ResponseEntity<>(savedSeatReservation, HttpStatus.CREATED);
         }
     }
-    @PostMapping("/DeleteSeat")
-    public ResponseEntity<Object> ReserveSeat(@RequestBody SeatReservation seatReservation) {
-        SeatReservation savedSeatReservation = seatReservationRepository.save(seatReservation);
+    /*@DeleteMapping("/DeleteSeat")
+    public ResponseEntity<Void> DeleteSeat(@RequestBody SeatReservation seatReservation) {
+        List<SeatReservation> reservedSeats = seatReservationRepository.findAll();
+       // for (int i = 0; i < reservedSeats.size(); i++) {
+            //if()
+        //}
+       /* SeatReservation savedSeatReservation = seatReservationRepository.getReferenceById(id);
         if (savedSeatReservation == null) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.notFound().build();
         } else {
-            return new ResponseEntity<>(savedSeatReservation, HttpStatus.CREATED);
-        }
-    }
+            seatReservationRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }*/
+    //}
 }
