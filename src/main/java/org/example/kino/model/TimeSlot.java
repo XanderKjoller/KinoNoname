@@ -1,6 +1,7 @@
 package org.example.kino.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public class TimeSlot {
     private LocalDateTime start;
     private LocalDateTime end;
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "userID")
     private User user;
     private String role;

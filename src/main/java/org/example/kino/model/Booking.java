@@ -1,5 +1,6 @@
 package org.example.kino.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,12 +10,14 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingID;
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "showID")
     private Show show;
     private int seatRow;
     private int seatColumn;
 
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "userID")
     private User user;
 

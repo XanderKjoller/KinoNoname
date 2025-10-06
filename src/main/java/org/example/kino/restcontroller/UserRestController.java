@@ -1,65 +1,58 @@
-package org.example.kino.controller;
+package org.example.kino.restcontroller;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.kino.model.User;
 import org.example.kino.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-
 @RestController
+//@RequestMapping("/users")
+@CrossOrigin(origins = "http://127.0.0.1:5500", allowCredentials = "true")
 public class UserRestController {
+
     @Autowired
     private UserRepository userRepository;
 
 
 
 
-    @PostMapping("/test")
-    public String test() {
-        return "It works!";
-    }
-
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> body, HttpSession session) {
-        String username = body.get("username");
-        String password = body.get("password");
-
-        return userRepository.findByUsernameAndPassword(username, password)
-                .map(user -> {
-                    session.setAttribute("user", user);
-                    return ResponseEntity.ok("Login success");
-                })
-                .orElse(ResponseEntity.status(401).body("Invalid credentials"));
-    }
-    @PostMapping("/login1")
-    public String login(@RequestParam String username,
-                        @RequestParam String password,
-                        HttpSession session) {
-        Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
-        if (user.isPresent()) {
-            session.setAttribute("user", user.get());
-            return "Login successful!";
-        } else {
-            return "Invalid credentials";
+    public ResponseEntity<User> loginWithSession(@RequestBody User loginUser, HttpSession session) {
+        User user = userRepository.findByUsername(loginUser.getUsername());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+
+        if (!user.getPassword().equals(loginUser.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        session.setAttribute("loggedInUser", user);
+        user.setPassword(null); // never return passwords
+
+        return ResponseEntity.ok(user);
     }
 
 
-    @GetMapping("/me")
-    public Object getSessionUser(HttpSession session) {
-        return session.getAttribute("user");
-    }
 
     @PostMapping("/logout")
-    public String logout(HttpSession session) {
+    public ResponseEntity<String> logout(HttpSession session) {
         session.invalidate();
-        return "Logged out!";
+        return ResponseEntity.ok("Logged out");
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<User> me(HttpSession session) {
+        User loggedIn = (User) session.getAttribute("loggedInUser");
+        if (loggedIn == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(loggedIn);
     }
 
     // CREATE
