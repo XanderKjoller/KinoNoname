@@ -19,12 +19,10 @@ public class User {
 
     // Relations
     @OneToMany(mappedBy = "user")
-    @JsonBackReference
     private List<Booking> bookings;
     
 
     @OneToMany(mappedBy = "user")
-    @JsonBackReference
     private List<TimeSlot> timeSlots;
 
     public List<Booking> getBookings() {

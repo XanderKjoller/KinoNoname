@@ -1,5 +1,9 @@
 package org.example.kino.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -7,6 +11,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "Showtime") // Show is a reserved word in sql syntax thats why we use showtime instead
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "showID"
+)
 public class Show {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,5 +84,13 @@ public class Show {
 
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
+    }
+
+    public List<SeatReservation> getSeatReservations() {
+        return seatReservations;
+    }
+
+    public void setSeatReservations(List<SeatReservation> seatReservations) {
+        this.seatReservations = seatReservations;
     }
 }

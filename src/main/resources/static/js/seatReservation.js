@@ -1,0 +1,85 @@
+import {fetchAnyUrl, postObjectAsJson} from "./moduleJSON.js"
+
+const seats = document.getElementById("seats");
+
+
+//const seatsData = document.getElementById("seatReservationData");
+//const seatReservations = JSON.parse(seatsData.dataset.reservations);
+//console.log("Seat Reservations from backend:" + seatsData);
+//const dataString = seatsData.dataset.reservations;
+
+//const seatReservations = JSON.parse(dataString);
+//console.log("Parsed data:", seatReservations);
+
+
+
+const height = 20
+const width = 20
+
+const seatList = [];
+
+const totalSeats = height * width;
+seats.style.gridTemplateColumns = `repeat(${width}, 1fr)`;
+function fillSeats() {
+    for (let i = 0; i < totalSeats; i++) {
+        let seat = document.createElement("div");
+        seat.className = "seat";
+        seats.appendChild(seat);
+        seatList.push(seat);
+    }
+}
+
+fillSeats();
+
+for (let i = 0; i < seatList.length; i++) {
+    seatList[i].addEventListener("click", () =>  clickedSeat(seatList[i]));
+}
+function clickedSeat(seat){
+    if (!seat.classList.contains("reserved")){
+        if(seat.isChosen === true){
+            seat.isChosen = false
+            seat.classList.remove("selected")
+        }
+        else  {
+            seat.isChosen = true
+            seat.classList.add("selected")
+
+            //make reservation :) if you're reading this you might be wasting time :(
+            const seatNumber = seatList.findIndex(s => s === seat) + 1;
+            //change when you have it, showID
+            const seatReservation = {
+                seatRow: Math.floor(seatNumber / height) + 1,
+                seatColumn: seatNumber - (Math.floor(seatNumber / height) * height),
+                show: 1
+            };
+            saveSeatReservation(seatReservation).then(r => {})
+        }
+    }
+}
+
+function fillInReservedSeats(seat){
+    console.log("reserved seat: " + seat.seatColumn)
+
+    const seatNumber = (seat.seatRow -1) * height + seat.seatColumn - 1
+    console.log(seatNumber + ", " + seat.seatColumn + ", " + seat.seatRow)
+    seatList[seatNumber].classList = "seat reserved"
+}
+
+let reservedSeats = []
+async function fetchReservedSeats() {
+    console.log(window.location.origin + "/SeatReservationData")
+    reservedSeats = await fetchAnyUrl(window.location.origin + "/SeatReservationData");
+    if (reservedSeats.length > 0) {
+        reservedSeats.forEach(fillInReservedSeats)
+    } else {
+        console.log("no seat reservations")
+    }
+}
+
+async function saveSeatReservation(seatReservation) {
+    const response = await postObjectAsJson(window.location.origin + "/ReserveSeat", seatReservation, "POST");
+    const body = await response.text();
+    alert(body)
+}
+
+fetchReservedSeats().then(r => {console.log("worked")})
