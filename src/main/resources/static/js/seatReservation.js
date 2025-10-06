@@ -36,22 +36,23 @@ for (let i = 0; i < seatList.length; i++) {
 }
 function clickedSeat(seat){
     if (!seat.classList.contains("reserved")){
+        //make reservation :) if you're reading this you might be wasting time :(
+        const seatNumber = seatList.findIndex(s => s === seat) + 1;
+        //change when you have it, showID
+        const seatReservation = {
+            seatRow: Math.floor(seatNumber / height) + 1,
+            seatColumn: seatNumber - (Math.floor(seatNumber / height) * height),
+            show: {showID : 1}
+        }
+
         if(seat.isChosen === true){
             seat.isChosen = false
             seat.classList.remove("selected")
+            deleteSeatReservation(seatReservation).then(r => {})
         }
         else  {
             seat.isChosen = true
             seat.classList.add("selected")
-
-            //make reservation :) if you're reading this you might be wasting time :(
-            const seatNumber = seatList.findIndex(s => s === seat) + 1;
-            //change when you have it, showID
-            const seatReservation = {
-                seatRow: Math.floor(seatNumber / height) + 1,
-                seatColumn: seatNumber - (Math.floor(seatNumber / height) * height),
-                show: 1
-            };
             saveSeatReservation(seatReservation).then(r => {})
         }
     }
@@ -77,9 +78,15 @@ async function fetchReservedSeats() {
 }
 
 async function saveSeatReservation(seatReservation) {
-    const response = await postObjectAsJson(window.location.origin + "/ReserveSeat", seatReservation, "POST");
-    const body = await response.text();
-    alert(body)
+    const [body, status] = await postObjectAsJson(window.location.origin + "/ReserveSeat", seatReservation, "POST");
+    //alert(JSON.stringify(body));
+    console.log(JSON.stringify(body))
+}
+
+async function deleteSeatReservation(seatReservation){
+    const [body, status] = await postObjectAsJson(window.location.origin + "/DeleteSeat", seatReservation, "DELETE");
+    //alert(JSON.stringify(body));
+    console.log(JSON.stringify(body))
 }
 
 fetchReservedSeats().then(r => {console.log("worked")})

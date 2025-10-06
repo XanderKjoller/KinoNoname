@@ -14,7 +14,7 @@ import java.util.List;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "showID"
-)
+)//this
 public class Show {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

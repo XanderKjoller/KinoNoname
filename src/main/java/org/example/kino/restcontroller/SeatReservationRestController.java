@@ -44,4 +44,13 @@ public class SeatReservationRestController {
             return new ResponseEntity<>(savedSeatReservation, HttpStatus.CREATED);
         }
     }
+    @PostMapping("/DeleteSeat")
+    public ResponseEntity<Object> ReserveSeat(@RequestBody SeatReservation seatReservation) {
+        SeatReservation savedSeatReservation = seatReservationRepository.save(seatReservation);
+        if (savedSeatReservation == null) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            return new ResponseEntity<>(savedSeatReservation, HttpStatus.CREATED);
+        }
+    }
 }
