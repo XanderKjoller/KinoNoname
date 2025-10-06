@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>User</title>
+    <link rel="stylesheet" th:href="@{style.css}">
 </head>
 <body>
 <h1>Login User</h1>
@@ -33,12 +34,15 @@
 
         <button type="submit" title="Login">Login</button>
     </form>
+    <form id="btn" th:action="@{/signUp}">
+        <button type="submit" title="Sign Up">Sign Up</button>
+    </form>
 </div>
 
 
 </body>
 <script>
-    console.log("f")
+    console.log("loginUser")
 const urlUsersLogin = "http://localhost:8080/login"; // Correct URL without '/users'
 
 // Initialize form and event listener
@@ -85,4 +89,6 @@ async function handleFormSubmit(event) {
     }
 }
 </script>
+<script></script>
+
 </html>

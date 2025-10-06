@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" th:href="@{style.css}">
+</head>
+<body>
+
+<div class="signup-container">
+    <h1>Sign Up</h1>
+    <form id="signupForm" method="POST" action="/signup">
+        <label for="inpUsername">Username:</label>
+        <input type="text" id="inpUsername" name="username" required>
+
+        <label for="inpPassword">Password:</label>
+        <input type="password" id="inpPassword" name="password" required>
+
+        <label for="inpAuthority">Authority:</label>
+        <input type="text" id="inpAuthority" name="authority" placeholder="e.g. Employee or Customer" required>
+
+        <button type="submit">Create Account</button>
+    </form>
+    <form id="btn" th:action="@{/login}">
+        <button type="submit" title="login">login</button>
+    </form>
+</div>
+
+</body>
+<script>
+
+    console.log("signUpUser")
+    const urlSignUp = "http://localhost:8080/signUp";
+
+    // Initialize form and event listener
+    document.addEventListener('DOMContentLoaded', function() {
+        const formUser = document.getElementById("signupForm");
+        formUser.addEventListener("submit", handleFormSubmit);
+    });
+
+    async function handleFormSubmit(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Collect user data from the form
+        const user = {
+            username: document.getElementById("inpUsername").value,
+            password: document.getElementById("inpPassword").value,
+            authority: document.getElementById("inpAuthority").value
+
+        };
+
+        try {
+            // Send the data to the backend via fetch
+            const response = await fetch(urlSignUp, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user),
+            });
+
+            // Check if the response is successful
+            if (!response.ok) {
+                throw new Error("SignUp failed: " + response.status);
+            }
+
+            // Parse the response JSON
+            const data = await response.json();
+            console.log(data);
+
+
+            alert("SignUp successful!");
+
+        } catch (err) {
+            // Handle any errors
+            console.error(err);
+            alert(err.message);
+        }
+    }
+
+</script>
+</html>

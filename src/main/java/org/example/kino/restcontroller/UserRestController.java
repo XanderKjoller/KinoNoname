@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.Optional;
 @RestController
 //@RequestMapping("/users")
@@ -18,6 +19,33 @@ public class UserRestController {
     @Autowired
     private UserRepository userRepository;
 
+
+    @PostMapping("/signUp")
+    public ResponseEntity<?> signUpUser(@RequestBody User signUpUser) {
+        // Check if username already exists
+        User existingUser = userRepository.findByUsername(signUpUser.getUsername());
+        if (existingUser != null) {
+            // Return HTTP 409 Conflict if username already exists
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("Username already exists");
+        }
+
+        // Create new user safely
+        User userSignUp = new User(
+                signUpUser.getUsername(),
+                signUpUser.getPassword(),
+                signUpUser.getAuthority()
+        );
+
+        userRepository.save(userSignUp);
+
+        // Never return passwords
+        userSignUp.setPassword(null);
+
+        // Return HTTP 201 Created
+        return ResponseEntity.status(HttpStatus.CREATED).body(userSignUp);
+    }
 
 
 
