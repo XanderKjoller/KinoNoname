@@ -2,21 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-
+    <title>User</title>
 </head>
 <body>
-<div class="login-container">
-    <h2>Login</h2>
-    <form id="loginForm">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
+<h1>Login User</h1>
 
+<div class="form-container">
+    <form id="formUser">
+        <div class="form-group">
+            <label for="inpUsername">Username</label>
+            <input
+                    type="text"
+                    name="username"
+                    class="inputfield"
+                    placeholder="Enter your username"
+                    id="inpUsername"
+                    required>
+        </div>
+
+        <div class="form-group">
+            <label for="inpPassword">Password</label>
+            <input
+                    type="password"
+                    name="password"
+                    class="inputfield"
+                    placeholder="Enter your password"
+                    id="inpPassword"
+                    required>
+        </div>
+
+        <button type="submit" title="Login">Login</button>
+    </form>
 </div>
 
 
 </body>
+<script>
+    console.log("f")
+const urlUsersLogin = "http://localhost:8080/login"; // Correct URL without '/users'
+
+// Initialize form and event listener
+document.addEventListener('DOMContentLoaded', function() {
+    const formUser = document.getElementById("formUser");
+    formUser.addEventListener("submit", handleFormSubmit);
+});
+
+async function handleFormSubmit(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Collect user data from the form
+    const user = {
+        username: document.getElementById("inpUsername").value,
+        password: document.getElementById("inpPassword").value
+    };
+
+    try {
+        // Send the data to the backend via fetch
+        const response = await fetch(urlUsersLogin, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(user),
+            credentials: "include"
+        });
+
+        // Check if the response is successful
+        if (!response.ok) {
+            throw new Error("Login failed: " + response.status);
+        }
+
+        // Parse the response JSON
+        const data = await response.json();
+        console.log(data);
+
+        // Store the user information in session storage
+        sessionStorage.setItem("loggedInUser", JSON.stringify(data));
+        alert("Login successful! Welcome " + data.username);
+
+    } catch (err) {
+        // Handle any errors
+        console.error(err);
+        alert(err.message);
+    }
+}
+</script>
 </html>

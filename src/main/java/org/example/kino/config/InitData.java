@@ -95,6 +95,7 @@ public class InitData implements CommandLineRunner {
         u2.setAuthority("EMPLOYEE");
         userRepository.save(u2);
 
+
         // --- Create Showtimes ---
         Show st1 = new Show();
         st1.setMovie(movie1);
