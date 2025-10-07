@@ -32,7 +32,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<TimeSlot> timeSlots;
     @OneToMany(mappedBy = "user")
-    private List<SeatReservation> seatReservation;
+    private List<SeatReservation> seatReservation; //Seats reserved.
 
     public User(String username, String password, String authority) {
         this.username = username;
