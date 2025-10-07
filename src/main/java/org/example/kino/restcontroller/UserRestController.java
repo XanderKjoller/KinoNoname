@@ -35,6 +35,7 @@ public class UserRestController {
         User userSignUp = new User(
                 signUpUser.getUsername(),
                 signUpUser.getPassword(),
+                signUpUser.getMail(),
                 signUpUser.getAuthority()
         );
 
@@ -84,11 +85,11 @@ public class UserRestController {
     }
 
     // CREATE
-    @PostMapping("/createuser")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User saved = userRepository.save(user);
-        return new ResponseEntity<>(saved, HttpStatus.CREATED);
-    }
+//    @PostMapping("/createuser")
+//    public ResponseEntity<User> createUser(@RequestBody User user) {
+//        User saved = userRepository.save(user);
+//        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+//    }
 
     // READ ALL
     @GetMapping("/users")

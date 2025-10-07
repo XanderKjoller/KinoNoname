@@ -18,5 +18,12 @@ public class UserController {
     }
 
 
+    @GetMapping("/")
+    public String frontpage(){
+
+        return "frontpage";
+    }
+
+
 
 }

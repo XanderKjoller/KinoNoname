@@ -16,8 +16,14 @@
         <label for="inpPassword">Password:</label>
         <input type="password" id="inpPassword" name="password" required>
 
-        <label for="inpAuthority">Authority:</label>
-        <input type="text" id="inpAuthority" name="authority" placeholder="e.g. Employee or Customer" required>
+        <label for="inpMail">Mail:</label>
+        <input type="text" id="inpMail" name="mail" required>
+
+        <label for="ddAuthority">Authority:</label>
+        <select name="userType" id="ddAuthority" required>
+            <option value="employee">employee</option>
+            <option selected value="customer">costumer</option>
+        </select>
 
         <button type="submit">Create Account</button>
     </form>
@@ -30,7 +36,7 @@
 <script>
 
     console.log("signUpUser")
-    const urlSignUp = "http://localhost:8080/signUp";
+    const urlSignUp = window.location.origin + "/signUp";
 
     // Initialize form and event listener
     document.addEventListener('DOMContentLoaded', function() {
@@ -44,8 +50,9 @@
         // Collect user data from the form
         const user = {
             username: document.getElementById("inpUsername").value,
+            mail: document.getElementById("inpMail").value,
             password: document.getElementById("inpPassword").value,
-            authority: document.getElementById("inpAuthority").value
+            authority: document.getElementById("ddAuthority").value
 
         };
 
