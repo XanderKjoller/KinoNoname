@@ -34,7 +34,7 @@ public class Show {
     @OneToMany(mappedBy = "show", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings;
 
-    @OneToMany(mappedBy = "show", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "show")
     private List<SeatReservation> seatReservations;
 
 

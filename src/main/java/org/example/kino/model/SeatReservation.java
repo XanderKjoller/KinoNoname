@@ -3,6 +3,7 @@ package org.example.kino.model;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -15,9 +16,15 @@ public class SeatReservation {
     private int seatRow;
     private int seatColumn;
 
+    private LocalDateTime timeLog;
+
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private Show show;
+
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private User user;
 
     public int getSeatReservationID() {
         return seatReservationID;
@@ -49,5 +56,21 @@ public class SeatReservation {
 
     public void setShow(Show show) {
         this.show = show;
+    }
+
+    public LocalDateTime getTimeLog() {
+        return timeLog;
+    }
+
+    public void setTimeLog(LocalDateTime timeLog) {
+        this.timeLog = timeLog;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
