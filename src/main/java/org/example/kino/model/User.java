@@ -20,6 +20,7 @@ public class User {
     private int userID;
     @Column(unique = true, nullable = false)
     private String username;
+    private String mail;
     private String password;
     private String authority;
 
@@ -34,13 +35,30 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<SeatReservation> seatReservation; //Seats reserved.
 
-    public User(String username, String password, String authority) {
+    public User(String username, String mail, String password, String authority) {
         this.username = username;
+        this.mail = mail;
         this.password = password;
         this.authority = authority;
     }
 
     public User() {
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public List<SeatReservation> getSeatReservation() {
+        return seatReservation;
+    }
+
+    public void setSeatReservation(List<SeatReservation> seatReservation) {
+        this.seatReservation = seatReservation;
     }
 
     public List<Booking> getBookings() {
@@ -96,12 +114,12 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof User user)) return false;
-        return getUserID() == user.getUserID() && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getAuthority(), user.getAuthority());
+        return Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getMail(), user.getMail());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserID(), getUsername(), getPassword(), getAuthority());
+        return Objects.hash(getUsername(), getMail());
     }
 }
 

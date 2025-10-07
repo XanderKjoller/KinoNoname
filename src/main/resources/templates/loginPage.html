@@ -43,7 +43,7 @@
 </body>
 <script>
     console.log("loginUser")
-const urlUsersLogin = "http://localhost:8080/login"; // Correct URL without '/users'
+const urlUsersLogin = window.location.origin + "/login"; // Correct URL without '/users'
 
 // Initialize form and event listener
 document.addEventListener('DOMContentLoaded', function() {

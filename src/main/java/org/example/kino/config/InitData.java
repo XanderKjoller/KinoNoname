@@ -86,12 +86,14 @@ public class InitData implements CommandLineRunner {
         User u1 = new User();
         u1.setUsername("alice");
         u1.setPassword("customer");
+        u1.setMail("alice@gmail.com");
         u1.setAuthority("CUSTOMER");
         userRepository.save(u1);
 
         User u2 = new User();
         u2.setUsername("bob");
         u2.setPassword("employee");
+        u2.setMail("bob@gmail.com");
         u2.setAuthority("EMPLOYEE");
         userRepository.save(u2);
 
