@@ -1,17 +1,11 @@
 import {fetchAnyUrl, postObjectAsJson} from "./moduleJSON.js"
 
 const seats = document.getElementById("seats");
+let reservedSeats = []
 
-
-//const seatsData = document.getElementById("seatReservationData");
-//const seatReservations = JSON.parse(seatsData.dataset.reservations);
-//console.log("Seat Reservations from backend:" + seatsData);
-//const dataString = seatsData.dataset.reservations;
-
-//const seatReservations = JSON.parse(dataString);
-//console.log("Parsed data:", seatReservations);
-
-
+const timerText = document.getElementById("timer")
+let timer = 0;
+const timeOutAmount = 10;
 
 const height = 20
 const width = 20
@@ -53,10 +47,15 @@ function clickedSeat(seat){
         else  {
             seat.isChosen = true
             seat.classList.add("selected")
-            saveSeatReservation(seatReservation).then(r => {})
+            saveSeatReservation(seatReservation).then(r => {
+                if(timer<= 0){
+                    setTimer()
+                }
+            })
         }
     }
 }
+
 
 function fillInReservedSeats(seat){
     console.log("reserved seat: " + seat.seatColumn)
@@ -66,7 +65,31 @@ function fillInReservedSeats(seat){
     seatList[seatNumber].classList = "seat reserved"
 }
 
-let reservedSeats = []
+function setTimer() {
+    console.log("set Timer" + timer)
+    timer = 60 * timeOutAmount; // total seconds
+    const intervalId = setInterval(() => {
+        if (timer <= 0) {
+            clearInterval(intervalId);
+            // timer ended, do something here if needed
+            fetchReservedSeats().then(r => {console.log("fetched")})
+            //userid delete all
+            return;
+        }
+
+        timer--;
+
+        let minutes = Math.floor(timer / 60);
+        let seconds = timer % 60;
+
+        let minutesStr = minutes < 10 ? "0" + minutes : "" + minutes;
+        let secondsStr = seconds < 10 ? "0" + seconds : "" + seconds;
+
+        timerText.innerText = minutesStr + ":" + secondsStr;
+    }, 1000);
+}
+
+
 async function fetchReservedSeats() {
     console.log(window.location.origin + "/SeatReservationData")
     reservedSeats = await fetchAnyUrl(window.location.origin + "/SeatReservationData");
