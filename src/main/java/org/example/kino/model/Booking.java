@@ -10,7 +10,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingID;
     @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+    //@JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "showID")
     private Show show;
     private int seatRow;

@@ -1,5 +1,9 @@
 package org.example.kino.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -7,6 +11,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "Movie")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "movieID"
+)
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +29,7 @@ public class Movie {
     private LocalDate releaseDate;
     private String name;
     @OneToMany(mappedBy = "movie")
+    @JsonIgnore
     private List<Show> shows;
 
     public List<Show> getShows() {

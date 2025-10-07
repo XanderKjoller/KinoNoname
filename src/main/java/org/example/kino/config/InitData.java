@@ -56,7 +56,7 @@ public class InitData implements CommandLineRunner {
         movie1.setAgeRating("PG-13");
         movie1.setActors("Leonardo DiCaprio");
         movie1.setReleaseDate(LocalDate.of(2010, 7, 16));
-        movie1.setPoster("inception.jpg");
+        movie1.setPoster("https://filmnoerden.dk/wp-content/uploads/2015/05/Inception-1200x1777.jpg");
         movieRepository.save(movie1);
 
         Movie movie2 = new Movie();
@@ -66,7 +66,7 @@ public class InitData implements CommandLineRunner {
         movie2.setAgeRating("PG-13");
         movie2.setActors("Christian Bale, Heath Ledger");
         movie2.setReleaseDate(LocalDate.of(2008, 7, 18));
-        movie2.setPoster("darkknight.jpg");
+        movie2.setPoster("https://img-cdn.sfanytime.com/COVERM/COVERM_b9e21514-0507-4965-a0a4-7ebb3971dd90_01.jpg?w=415&ar=0.692&fit=crop&fm=pjpg&s=6fb117a3ae4fde327e732ce00e7602db");
         movieRepository.save(movie2);
 
         // --- Create Snacks ---

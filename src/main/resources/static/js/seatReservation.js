@@ -2,10 +2,11 @@ import {fetchAnyUrl, postObjectAsJson} from "./moduleJSON.js"
 
 const seats = document.getElementById("seats");
 let reservedSeats = []
+let user;
 
 const timerText = document.getElementById("timer")
 let timer = 0;
-const timeOutAmount = 10;
+const timeOutAmount = 1;
 
 const height = 20
 const width = 20
@@ -31,13 +32,9 @@ for (let i = 0; i < seatList.length; i++) {
 function clickedSeat(seat){
     if (!seat.classList.contains("reserved")){
         //make reservation :) if you're reading this you might be wasting time :(
-        const seatNumber = seatList.findIndex(s => s === seat) + 1;
+        //const seatNumber = seatList.findIndex(s => s === seat) + 1;
         //change when you have it, showID
-        const seatReservation = {
-            seatRow: Math.floor(seatNumber / height) + 1,
-            seatColumn: seatNumber - (Math.floor(seatNumber / height) * height),
-            show: {showID : 1}
-        }
+        const seatReservation = seatToJson(seat)
 
         if(seat.isChosen === true){
             seat.isChosen = false
@@ -72,7 +69,15 @@ function setTimer() {
         if (timer <= 0) {
             clearInterval(intervalId);
             // timer ended, do something here if needed
-            fetchReservedSeats().then(r => {console.log("fetched")})
+            //fetchReservedSeats().then(r => {console.log("fetched")})
+            for (let i = 0; i < seatList.length; i++){
+                if(seatList[i].classList.contains("selected")){
+                    const seatReservation = seatToJson(seatList[i])
+                    deleteSeatReservation(seatReservation).then(r => {})
+                    seatList[i].classList.remove("selected")
+                }
+            }
+            timerText.innerText = ""
             //userid delete all
             return;
         }
@@ -89,6 +94,13 @@ function setTimer() {
     }, 1000);
 }
 
+async function fetchUser(){
+    console.log(window.location.origin + "/me")
+    user = await fetchAnyUrl(window.location.origin + "/me");
+    if ( user.length < 1) {
+        console.log("no user")
+    }
+}
 
 async function fetchReservedSeats() {
     console.log(window.location.origin + "/SeatReservationData")
@@ -111,5 +123,14 @@ async function deleteSeatReservation(seatReservation){
     //alert(JSON.stringify(body));
     //console.log(JSON.stringify(body))
 }
+function seatToJson(seat){
+    let seatNumber = seatList.findIndex(s => s === seat) + 1;
+    return {
+        seatRow: Math.floor(seatNumber / height) + 1,
+        seatColumn: seatNumber - (Math.floor(seatNumber / height) * height),
+        show: {showID: 1}
+    }
+}
 
-fetchReservedSeats().then(r => {console.log("worked")})
+fetchReservedSeats().then(r => {console.log("got seats")})
+fetchUser().then(r => {console.log("got user")})
