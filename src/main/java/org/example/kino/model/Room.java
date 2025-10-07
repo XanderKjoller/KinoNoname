@@ -1,11 +1,17 @@
 package org.example.kino.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "Room")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "roomID"
+)
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

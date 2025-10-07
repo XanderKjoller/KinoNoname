@@ -1,9 +1,6 @@
 package org.example.kino.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -27,14 +24,17 @@ public class Show {
 
     @ManyToOne
     @JoinColumn(name = "roomID")
+    @JsonIdentityReference(alwaysAsId = true)
     private Room room;
 
     private LocalDateTime period;
 
     @OneToMany(mappedBy = "show", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Booking> bookings;
 
     @OneToMany(mappedBy = "show")
+    @JsonIgnore
     private List<SeatReservation> seatReservations;
 
 

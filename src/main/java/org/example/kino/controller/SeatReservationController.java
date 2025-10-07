@@ -11,14 +11,13 @@ import java.util.List;
 
 @Controller
 public class SeatReservationController {
-    @Autowired
-    ShowRepository showRepository;
-
-    @Autowired
-    SeatReservationRepository seatReservationRepository;
 
     @GetMapping("/SeatReservation")
     public String seatReservation()  {
         return "seatReservation";
+    }
+    @GetMapping("/Bookings")
+    public String bookings()  {
+        return "bookings";
     }
 }
