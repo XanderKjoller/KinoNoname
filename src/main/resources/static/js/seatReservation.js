@@ -1,8 +1,8 @@
-import {fetchAnyUrl, postObjectAsJson} from "./moduleJSON.js"
+import {fetchAnyUrl, postObjectAsJson,fetchUser} from "./moduleJSON.js"
 
 const seats = document.getElementById("seats");
 let reservedSeats = []
-let user;
+let user
 
 const timerText = document.getElementById("timer")
 let timer = 0;
@@ -94,13 +94,7 @@ function setTimer() {
     }, 1000);
 }
 
-async function fetchUser(){
-    console.log(window.location.origin + "/me")
-    user = await fetchAnyUrl(window.location.origin + "/me");
-    if ( user.length < 1) {
-        console.log("no user")
-    }
-}
+
 
 async function fetchReservedSeats() {
     console.log(window.location.origin + "/SeatReservationData")
@@ -133,4 +127,4 @@ function seatToJson(seat){
 }
 
 fetchReservedSeats().then(r => {console.log("got seats")})
-fetchUser().then(r => {console.log("got user")})
+user= fetchUser().then(r => {console.log("got user")})

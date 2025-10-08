@@ -22,4 +22,13 @@ async function postObjectAsJson(url, object, httpVerbum) {
     return [responseJson, response.status];
 }
 
-export {fetchAnyUrl, postObjectAsJson};
+async function fetchUser(){
+    let user;
+    console.log(window.location.origin + "/me")
+    user = await fetchAnyUrl(window.location.origin + "/me");
+    if ( user.length < 1) {
+        console.log("no user")
+    }
+    return user
+}
+export {fetchAnyUrl, postObjectAsJson, fetchUser};
