@@ -3,12 +3,30 @@ package org.example.kino.model;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "Booking")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingID;
+
+    private String ticketCode;
+
+    @PrePersist
+    public void prePersist() {
+        // Temporary placeholder to ensure it's not null before persist
+        ticketCode = "PENDING";
+    }
+
+    @PostPersist
+    public void postPersist() {
+        // Once bookingID is generated, create the final ticket code
+        String randomPart = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        ticketCode = "TK-" + randomPart + "-" + bookingID;
+    }
+
     @ManyToOne
     //@JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "showID")
@@ -71,5 +89,13 @@ public class Booking {
 
     public void setSeatColumn(int seatColumn) {
         this.seatColumn = seatColumn;
+    }
+
+    public String getTicketCode() {
+        return ticketCode;
+    }
+
+    public void setTicketCode(String ticketCode) {
+        this.ticketCode = ticketCode;
     }
 }
