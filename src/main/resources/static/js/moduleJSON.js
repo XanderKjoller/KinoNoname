@@ -31,4 +31,24 @@ async function fetchUser(){
     }
     return user
 }
-export {fetchAnyUrl, postObjectAsJson, fetchUser};
+async function fetchUser2() {
+    try{
+        console.log(window.location.origin + "/me");
+        const user = await fetchAnyUrl(window.location.origin + "/me");
+
+        if (!user) {
+            console.log("No user found (null response)");
+            return null;
+        }
+
+        console.log("Fetched user:", user);
+        return user;
+    }catch (syntaxError){
+    }
+
+}
+function isEmployee(user) {
+    return user?.authority === "EMPLOYEE";
+}
+
+export {fetchAnyUrl, postObjectAsJson, fetchUser,fetchUser2,isEmployee};
