@@ -34,12 +34,44 @@
 
 </body>
 <script>
+    function fetchAnyUrl(url) {
+        return fetch(url).then(response => response.json())
+    }
+    async function fetchUser(){
+        let user;
+        console.log(window.location.origin + "/me")
+        user = await fetchAnyUrl(window.location.origin + "/me");
+        if ( user.length < 1) {
+            console.log("no user")
+        }
+        return user
+    }
 
     console.log("signUpUser")
     const urlSignUp = window.location.origin + "/signUp";
+    const ddAuthority = document.querySelector("ddAuthority");
+    async function checkUserCustomer() {
+        const user = await fetchUser();
+        console.log("Current user:", user);
+        const optionToDisable = document.querySelector('#ddAuthority option[value="employee"]');
+
+
+        if (user && user.authority && user.authority.toUpperCase() === "CUSTOMER") {
+            if (optionToDisable) optionToDisable.disabled = true;
+        }else if (!user && !user.authority) {
+            if (optionToDisable) optionToDisable.disabled = true;
+        }
+        if (user && user.authority && user.authority.toUpperCase() === "EMPLOYEE"){
+            if (optionToDisable) optionToDisable.disabled = false;
+        }
+    }
+
+
 
     // Initialize form and event listener
     document.addEventListener('DOMContentLoaded', function() {
+        checkUserCustomer();
+
         const formUser = document.getElementById("signupForm");
         formUser.addEventListener("submit", handleFormSubmit);
     });
@@ -56,12 +88,14 @@
 
         };
 
+
         try {
             // Send the data to the backend via fetch
             const response = await fetch(urlSignUp, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(user),
+
             });
 
             // Check if the response is successful
