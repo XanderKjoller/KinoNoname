@@ -34,37 +34,66 @@
 
 </body>
 <script>
+    // Fetch utility function
     function fetchAnyUrl(url) {
-        return fetch(url).then(response => response.json())
-    }
-    async function fetchUser(){
-        let user;
-        console.log(window.location.origin + "/me")
-        user = await fetchAnyUrl(window.location.origin + "/me");
-        if ( user.length < 1) {
-            console.log("no user")
-        }
-        return user
+        return fetch(url)
+            .then(response => {return response.json();
+            })
+            .catch(err => {
+                console.error("Fetch failed:", err);
+                return null;
+            });
     }
 
-    console.log("signUpUser")
+    // Fetch logged-in user
+    async function fetchUser() {
+        console.log(window.location.origin + "/me");
+        const user = await fetchAnyUrl(window.location.origin + "/me");
+
+        if (!user) {
+            console.log("No user found (null response)");
+            return null;
+        }
+
+        console.log("Fetched user:", user);
+        return user;
+    }
+
+    console.log("signUpUser");
+
     const urlSignUp = window.location.origin + "/signUp";
-    const ddAuthority = document.querySelector("ddAuthority");
+
+    // Disable or enable dropdown option based on user authority
     async function checkUserCustomer() {
         const user = await fetchUser();
-        console.log("Current user:", user);
         const optionToDisable = document.querySelector('#ddAuthority option[value="employee"]');
 
-
-        if (user && user.authority && user.authority.toUpperCase() === "CUSTOMER") {
-            if (optionToDisable) optionToDisable.disabled = true;
-        }else if (!user && !user.authority) {
-            if (optionToDisable) optionToDisable.disabled = true;
+        if (!optionToDisable) {
+            console.warn("Option 'employee' not found in #ddAuthority");
+            return;
         }
-        if (user && user.authority && user.authority.toUpperCase() === "EMPLOYEE"){
-            if (optionToDisable) optionToDisable.disabled = false;
+
+        // If no user or authority, disable "employee"
+        if (!user || !user.authority) {
+            optionToDisable.disabled = true;
+            console.log("Disabled 'employee' option (no user/authority)");
+            return;
+        }
+
+        // Check user's authority
+        const authority = user.authority.toUpperCase();
+        console.log("User authority:", authority);
+
+        if (authority === "CUSTOMER") {
+            optionToDisable.disabled = true;
+            console.log("Disabled 'employee' option (user is customer)");
+        } else if (authority === "EMPLOYEE") {
+            optionToDisable.disabled = false;
+            console.log("Enabled 'employee' option (user is employee)");
         }
     }
+
+
 
 
 
