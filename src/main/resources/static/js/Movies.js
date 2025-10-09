@@ -7,7 +7,7 @@ const dateSelect = document.querySelector(".filters select:nth-child(1)");
 const categorySelect = document.querySelector(".filters select:nth-child(2)");
 const searchInput = document.querySelector(".filters input");
 
-const MOVIE_URL = "http://localhost:8080/";
+const MOVIE_URL = window.location.origin+"/";
 
 let allMovies = [];
 
@@ -35,7 +35,7 @@ async function loadMovies() {
 // Fill category dropdown dynamically
 function populateCategories() {
     const categories = [...new Set(allMovies.map(m => m.category))];
-    categorySelect.innerHTML = `<option value="">Alle Kategorier</option>`;
+    categorySelect.innerHTML = `<option value="">Every Category</option>`;
     categories.forEach(cat => {
         const opt = document.createElement("option");
         opt.value = cat;
@@ -47,7 +47,7 @@ function populateCategories() {
 // Fill year dropdown dynamically (based on releaseDate)
 function populateDates() {
     const years = [...new Set(allMovies.map(m => new Date(m.releaseDate).getFullYear()))];
-    dateSelect.innerHTML = `<option value="">Alle År</option>`;
+    dateSelect.innerHTML = `<option value="">Every year</option>`;
     years.sort((a, b) => a - b); // Optional: Sort years in ascending order
     years.forEach(year => {
         const opt = document.createElement("option");
@@ -63,7 +63,7 @@ function displayMovies(movies) {
     moviesContainer.innerHTML = "";
 
     if (!movies || movies.length === 0) {
-        moviesContainer.innerHTML = `<p>Ingen film fundet 🎞️</p>`;
+        moviesContainer.innerHTML = `<p>No movie Found!!️</p>`;
         return;
     }
 

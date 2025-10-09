@@ -64,7 +64,7 @@
     const urlSignUp = window.location.origin + "/signUp";
 
     // Disable or enable dropdown option based on user authority
-    async function checkUserCustomer() {
+    async function checkUserCustomerForThisOption() {
         const user = await fetchUser();
         const optionToDisable = document.querySelector('#ddAuthority option[value="employee"]');
 
@@ -99,7 +99,7 @@
 
     // Initialize form and event listener
     document.addEventListener('DOMContentLoaded', function() {
-        checkUserCustomer();
+        checkUserCustomerForThisOption();
 
         const formUser = document.getElementById("signupForm");
         formUser.addEventListener("submit", handleFormSubmit);

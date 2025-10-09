@@ -154,14 +154,36 @@ public class InitData implements CommandLineRunner {
         Snack snack1 = new Snack();
         snack1.setName("Popcorn");
         snack1.setPrice(50);
-        snack1.setImage("popcorn.jpg");
+        snack1.setImage("https://plus.unsplash.com/premium_vector-1707895669915-8ff0eb3c66c5?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // Popcorn
         snackRepository.save(snack1);
 
         Snack snack2 = new Snack();
         snack2.setName("Soda");
         snack2.setPrice(30);
-        snack2.setImage("soda.jpg");
+        snack2.setImage("https://plus.unsplash.com/premium_vector-1734497623471-6852427507b0?q=80&w=711&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // Soda
         snackRepository.save(snack2);
+
+        Snack snack3 = new Snack();
+        snack3.setName("Nachos");
+        snack3.setPrice(45);
+        snack3.setImage("https://plus.unsplash.com/premium_vector-1731112270414-2a92557899b0?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // Nachos
+        snackRepository.save(snack3);
+
+        Snack snack4 = new Snack();
+        snack4.setName("Chocolate");
+        snack4.setPrice(25);
+        snack4.setImage("https://plus.unsplash.com/premium_vector-1733297092486-e3bc899095de?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // Candy
+        snackRepository.save(snack4);
+
+        Snack snack5 = new Snack();
+        snack5.setName("Hot Dog");
+        snack5.setPrice(40);
+        snack5.setImage("https://plus.unsplash.com/premium_vector-1721890180938-66e3ca1648e1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90JTIwZG9nfGVufDB8fDB8fHww"); // Hot Dog
+        snackRepository.save(snack5);
+
+
+
+
 
         // --- Create Users ---
         User u1 = new User();
