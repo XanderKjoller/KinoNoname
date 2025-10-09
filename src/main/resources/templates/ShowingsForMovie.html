@@ -1,19 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
 <!-- Header -->
 <div class="header">
     <div class="logo">🍿 KinoXP</div>
     <div class="nav">
-        <a href="#">Hjem</a>
+        <a href="/">Hjem</a>
         <a href="#">Katalog</a>
     </div>
-    <div class="login"><a href="#">Log Ind</a></div>
+    <div class="login"><a href="/login">Log Ind</a></div>
+</div>
+<div id="moviePoster"></div>
+<!-- showGrid -->
+<div id="showings" class="movie-grid">
+
 </div>
 
 </body>
+<script type="module" th:src="@{/js/showings.js}"></script>
+
 </html>

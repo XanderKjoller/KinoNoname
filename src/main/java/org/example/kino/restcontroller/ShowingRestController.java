@@ -17,7 +17,7 @@ public class ShowingRestController {
     @Autowired
     ShowRepository showRepository;
 
-    @GetMapping("/Showings/{movieId}")
+    @GetMapping("/ShowingsData/{movieId}")
     private List<Show> showings(@PathVariable("movieId")int movieId)
     {
         List<Show> showings = showRepository.findAll();
