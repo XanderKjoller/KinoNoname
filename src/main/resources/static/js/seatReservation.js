@@ -11,7 +11,7 @@ const bookButton = document.getElementById("bookButton")
 
 const timerText = document.getElementById("timer")
 let timer = 0;
-const timeOutAmount = 1;
+const timeOutAmount = 10;
 
 let height = 20
 let width = 20
@@ -47,7 +47,18 @@ function clickedSeat(seat){
         if(seat.isChosen === true){
             seat.isChosen = false
             seat.classList.remove("selected")
-            deleteSeatReservation(seatReservation).then(r => {})
+            deleteSeatReservation(seatReservation).then(r => {
+                let nomoreseats = true;
+                for (let i = 0; i <seatList.length; i++){
+                    if(seatList[i].classList.contains("selected")) {
+                        nomoreseats = false;
+                    }
+                }
+                if(nomoreseats)
+                    timer = 0;
+            })
+
+
         }
         else  {
             //console.log("this is user:" + user.username)
@@ -176,11 +187,15 @@ async function bookTickets() {
             const [body, status] = await postObjectAsJson(window.location.origin + "/BookTicket", booking, "POST")
             console.log("json of booking", JSON.stringify(booking))
             seatList[i].classList.remove("selected")
+            seatList[i].isChosen = false;
             timer = 0;
         }
     }
     if(!seatsChosen){
         //write to user no seats chosen
+    }
+    else {
+        window.location.href = "/Bookings";
     }
 
 }

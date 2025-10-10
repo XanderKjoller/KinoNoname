@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import static org.example.kino.controller.UserController.getSession;
 
 @Controller
 public class SeatReservationController {
@@ -20,6 +21,7 @@ public class SeatReservationController {
 
     @GetMapping("/SeatReservation")
     public String seatReservation(HttpServletRequest request, HttpSession session, Model model)  {
+        getSession(model, session);
         int showID = Integer.parseInt(request.getParameter("showID"));
         session.setAttribute("showID", showID);
         model.addAttribute("show", showRepository.findById(showID).get());
@@ -27,7 +29,8 @@ public class SeatReservationController {
     }
 
     @GetMapping("/Bookings")
-    public String bookings()  {
+    public String bookings(HttpSession session, Model model)  {
+        getSession(model, session);
         return "bookings";
     }
 }

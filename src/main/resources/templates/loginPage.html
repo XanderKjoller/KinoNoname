@@ -83,7 +83,8 @@ async function handleFormSubmit(event) {
 
         // Store the user information in session storage
         sessionStorage.setItem("loggedInUser", JSON.stringify(data));
-        alert("Login successful! Welcome " + data.username);
+        //alert("Login successful! Welcome " + data.username);
+        window.location.href = "/"
 
     } catch (err) {
         // Handle any errors
