@@ -2,7 +2,7 @@ import { fetchAnyUrl, fetchUser2, isEmployee } from "./moduleJSON.js";
 
 console.log("snacks.js loaded");
 
-let user
+let isUserEmployee
 
 const snacksContainer = document.getElementById("snacks");
 const searchInput = document.querySelector(".filters input");
@@ -15,10 +15,18 @@ let allSnacks = [];
 async function fetchAnyUrl2(url) {
     const response = await fetch(url, { method: 'POST' });
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    isUserEmployee = false
+    try {
+        const user = await fetchAnyUrl("/me");
+        console.log(user.authority)
+        isUserEmployee = user.authority === "EMPLOYEE"
+    } catch (error) {
+        console.log("not logged in or not employee")
+    }
     return await response.json();
 }
 async function loadSnacks() {
-    //user = await fetchUser2()
+
 
     try {
         const snacks = await fetchAnyUrl2(SNACK_URL);
@@ -64,38 +72,41 @@ function displaySnacks(snacks) {
         snackDiv.appendChild(titleDiv);
 
         // Click to show details modal
+            if (index === array.length - 1) {
+                if(isUserEmployee){
+                    const newSnackDiv = document.createElement("div");
+                    newSnackDiv.classList.add("snack"); // same styling as snacks
+
+                    const _img = document.createElement("img");
+                    _img.src = "https://plus.unsplash.com/premium_photo-1681400545953-0ba00cfa7926?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGNyZWF0ZSUyMG5ld3xlbnwwfHwwfHx8MA%3D%3D"; // placeholder or custom image
+                    _img.alt = "Add new Snack";
+                    _img.style.display = "flex";
+
+
+
+                    const _imgTitle = document.createElement("div");
+                    _imgTitle.className = "snack-title";
+                    _imgTitle.textContent = "Add new Snack";
+
+                    newSnackDiv.appendChild(_img);
+                    newSnackDiv.appendChild(_imgTitle);
+                    _img.addEventListener("click", ()=>{
+                        window.location.href = window.location.origin+ "/snack"
+                    })
+
+
+                    snacksContainer.appendChild(newSnackDiv);
+                }
+                }
+
+
             snackDiv.addEventListener("click", () => window.location.href = window.location.origin+ "/snack/"+snack.snackID
             );
 
+
+
         snacksContainer.appendChild(snackDiv);
-
-
-
-        // If last element, add a "Load More" snack
-        if (index === array.length - 1) {
-                const newSnackDiv = document.createElement("div");
-                newSnackDiv.classList.add("snack"); // same styling as snacks
-
-                const _img = document.createElement("img");
-                _img.src = "https://plus.unsplash.com/premium_photo-1681400545953-0ba00cfa7926?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGNyZWF0ZSUyMG5ld3xlbnwwfHwwfHx8MA%3D%3D"; // placeholder or custom image
-                _img.alt = "Add new Snack";
-                _img.style.display = "flex";
-
-
-
-                const _imgTitle = document.createElement("div");
-                _imgTitle.className = "snack-title";
-                _imgTitle.textContent = "Add new Snack";
-
-                newSnackDiv.appendChild(_img);
-                newSnackDiv.appendChild(_imgTitle);
-                _img.addEventListener("click", ()=>{
-                    window.location.href = window.location.origin+ "/snack"
-                })
-
-
-                snacksContainer.appendChild(newSnackDiv);
-            }
+            // If last element, add a "Load More" snack
 
 
     }
