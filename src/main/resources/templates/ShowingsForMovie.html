@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+    <div class="logo">🍿 KinoXP</div>
+    <div class="nav">
+        <a href="/">Hjem</a>
+        <a href="#">Katalog</a>
+    </div>
+    <div class="login"><a href="/login">Log Ind</a></div>
+</div>
+<div id="moviePoster"></div>
+<a th:if="${authority}" th:href="@{/showCreator/{id}(id=${movieID})}" class="btn">make a show</a>
+<!-- showGrid -->
+<div id="showings" class="scheduleGrid">
+
+</div>
+</body>
+<script type="module" th:src="@{/js/showings.js}"></script>
+
+</html>

@@ -1,4 +1,4 @@
-import { fetchAnyUrl } from "./moduleJSON.js";
+import {fetchAnyUrl} from "./moduleJSON.js";
 
 console.log("Movies.js loaded");
 
@@ -7,16 +7,17 @@ const dateSelect = document.querySelector(".filters select:nth-child(1)");
 const categorySelect = document.querySelector(".filters select:nth-child(2)");
 const searchInput = document.querySelector(".filters input");
 
-const MOVIE_URL = window.location.origin+"/";
+const MOVIE_URL = window.location.origin + "/";
 
 let allMovies = [];
 
 // Load movies from backend
 async function fetchAnyUrl2(url) {
-    const response = await fetch(url, { method: 'POST' });
+    const response = await fetch(url, {method: 'POST'});
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     return await response.json();
 }
+
 async function loadMovies() {
     try {
         const movies = await fetchAnyUrl2(MOVIE_URL);
@@ -75,7 +76,7 @@ function displayMovies(movies) {
         const img = document.createElement('img');
         img.src = movie.poster;
         img.alt = movie.name;
-        img.style.display="flex"
+        img.style.display = "flex"
 
         // Movie title
         const titleDiv = document.createElement('div');
@@ -99,7 +100,7 @@ function displayMovies(movies) {
         movieDiv.appendChild(durationDiv);
 
         // Click to show details modal
-        movieDiv.addEventListener("click", () => showMovieDetails(movie));
+        movieDiv.addEventListener("click", () => window.location.href = "/showing/" + movie.movieID);
 
         moviesContainer.appendChild(movieDiv);
     });
