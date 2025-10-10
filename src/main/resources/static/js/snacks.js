@@ -18,7 +18,8 @@ async function fetchAnyUrl2(url) {
     return await response.json();
 }
 async function loadSnacks() {
-    user = await fetchUser2()
+    //user = await fetchUser2()
+
     try {
         const snacks = await fetchAnyUrl2(SNACK_URL);
         allSnacks = snacks;
@@ -63,7 +64,8 @@ function displaySnacks(snacks) {
         snackDiv.appendChild(titleDiv);
 
         // Click to show details modal
-        snackDiv.addEventListener("click", () => showSnackDetails(snack));
+            snackDiv.addEventListener("click", () => window.location.href = window.location.origin+ "/snack/"+snack.id
+            );
 
         snacksContainer.appendChild(snackDiv);
 
@@ -71,7 +73,6 @@ function displaySnacks(snacks) {
 
         // If last element, add a "Load More" snack
         if (index === array.length - 1) {
-            if(user.authority.toLowerCase()==="employee"){
                 const newSnackDiv = document.createElement("div");
                 newSnackDiv.classList.add("snack"); // same styling as snacks
 
@@ -89,14 +90,14 @@ function displaySnacks(snacks) {
                 newSnackDiv.appendChild(_img);
                 newSnackDiv.appendChild(_imgTitle);
                 _img.addEventListener("click", ()=>{
-                    window.location.href = window.location.origin+ "/"
+                    window.location.href = window.location.origin+ "/snack"
                 })
 
 
                 snacksContainer.appendChild(newSnackDiv);
             }
 
-        }
+
     }
 
 

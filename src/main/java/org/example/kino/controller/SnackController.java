@@ -9,4 +9,15 @@ public class SnackController {
     public String snacks(){
         return "snacks";
     }
+
+    @GetMapping("snack")
+    public String snack(){
+        return "snackUC";
+    }
+
+
+
+
+
+
 }

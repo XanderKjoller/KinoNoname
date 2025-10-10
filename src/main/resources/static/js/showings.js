@@ -69,7 +69,7 @@ function fillshowings(showings, auth) {
                     const subContainer = document.createElement("div");
                     subContainer.className = "subContainer";
                     subContainer.onclick = () => {
-                        window.location.href = `/insertBookingLink`;
+                        window.location.href = "/SeatReservation?showID=" + movieID;
                     };
 
 
