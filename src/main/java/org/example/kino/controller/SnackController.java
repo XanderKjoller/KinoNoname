@@ -3,7 +3,7 @@ package org.example.kino.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestAttribute;
 
 @Controller
 public class SnackController {
@@ -14,12 +14,16 @@ public class SnackController {
 
     @GetMapping("snack")
     public String snack(){
-        return "snackUC";
+        return "newSnack";
     }
 
 
 
+    @GetMapping("/snack/{id}")
+    public String snack(@PathVariable int id) {
 
+        return "putSnack";
+    }
 
 
 }

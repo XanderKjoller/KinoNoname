@@ -64,7 +64,7 @@ function displaySnacks(snacks) {
         snackDiv.appendChild(titleDiv);
 
         // Click to show details modal
-            snackDiv.addEventListener("click", () => window.location.href = window.location.origin+ "/snack/"+snack.id
+            snackDiv.addEventListener("click", () => window.location.href = window.location.origin+ "/snack/"+snack.snackID
             );
 
         snacksContainer.appendChild(snackDiv);
