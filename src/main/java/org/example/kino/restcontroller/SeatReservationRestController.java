@@ -44,9 +44,11 @@ public class SeatReservationRestController {
         //ændre når man kan få det fra sidste side
         int showID = Integer.parseInt(request.getParameter("showID"));
 
+
+
         List<SeatReservation> reservedSeats = seatReservationRepository.findAll();
         for (int i = 0; i < reservedSeats.size(); i++) {
-            if(reservedSeats.get(i).getTimeLog() != null && reservedSeats.get(i).getTimeLog().isBefore(LocalDateTime.now().minus(1, ChronoUnit.MINUTES))
+            if(reservedSeats.get(i).getTimeLog() != null && reservedSeats.get(i).getTimeLog().isBefore(LocalDateTime.now().minus(10, ChronoUnit.MINUTES))
             ||  (loggedInUser!= null && reservedSeats.get(i).getUser() != null && reservedSeats.get(i).getUser().getUserID() == loggedInUser.getUserID())){
                 seatReservationRepository.delete(reservedSeats.get(i));
                 reservedSeats.remove(reservedSeats.get(i));
@@ -56,6 +58,17 @@ public class SeatReservationRestController {
                 System.out.println("removing" + reservedSeats.get(i).getShow().getShowID());
                 reservedSeats.remove(reservedSeats.get(i));
                 i--;
+            }
+        }
+        List<Booking> bookings = bookingRepository.findAll();
+
+        for (int i = 0; i < bookings.size(); i++) {
+            if(bookings.get(i).getShow().getShowID() == showID){
+                SeatReservation bookingAsSeat = new SeatReservation();
+                bookingAsSeat.setShow(bookings.get(i).getShow());
+                bookingAsSeat.setSeatRow(bookings.get(i).getSeatRow());
+                bookingAsSeat.setSeatColumn(bookings.get(i).getSeatColumn());
+                reservedSeats.add(bookingAsSeat);
             }
         }
         return reservedSeats;

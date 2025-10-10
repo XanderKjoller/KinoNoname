@@ -231,18 +231,7 @@ public class InitData implements CommandLineRunner {
         b2.setSeatColumn(1);
         bookingRepository.save(b2);
 
-        // --- Create SeatReservation ---
-        SeatReservation sr1 = new SeatReservation();
-        sr1.setShow(st1);
-        sr1.setSeatRow(1);
-        sr1.setSeatColumn(3);
-        seatReservationRepository.save(sr1);
 
-        SeatReservation sr2 = new SeatReservation();
-        sr2.setShow(st1);
-        sr2.setSeatRow(2);
-        sr2.setSeatColumn(8);
-        seatReservationRepository.save(sr2);
 
         System.out.println("✅ Initial Kino data loaded into database!");
     }

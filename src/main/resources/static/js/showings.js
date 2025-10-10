@@ -68,6 +68,7 @@ function fillshowings(showings, auth) {
                 if (showDate === forwardDates[i]) {
                     const subContainer = document.createElement("div");
                     subContainer.className = "subContainer";
+                    subContainer.classList.add("showContainer")
                     subContainer.onclick = () => {
                         window.location.href = "/SeatReservation?showID=" + movieID;
                     };

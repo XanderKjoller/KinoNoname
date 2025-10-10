@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
   <link rel="stylesheet" th:href="@{style.css}" />
 </head>
 <body>
-<div class="header" th:fragment="header">
-  <div class="logo">🍿 KinoXP</div>
+<div  class="header" th:fragment="header">
+  <a style="text-decoration: none" class="logo" href="/">🍿 KinoXP</a>
   <div class="nav">
     <a href="/">Hjem</a>
-    <a href="#">Katalog</a>
+    <a th:if="${user != null}" href="/Bookings">Bookings</a>
   </div>
-  <div class="login"><a href="/login">Log Ind</a></div>
+    <div th:if="${user == null}">
+        <div class="login"><a href="/login">Log Ind</a></div>
+    </div>
+    <div th:if="${user != null}">
+        <div class="login"><a href="/signOut" th:text="${user.username} + ' Log Ud'"></a></div>
+    </div>
+
 </div>
 </body>
 </html>
