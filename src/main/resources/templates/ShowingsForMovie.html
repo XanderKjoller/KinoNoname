@@ -5,6 +5,12 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
+<style>
+    .showContainer:hover{
+        background: linear-gradient(135deg, #008000, #228B22);
+        box-shadow: 0 5px 12px rgba(65, 255, 108, 0.4);
+    }
+</style>
 <body>
 <!-- Header -->
 <header style="width: 100%" th:insert="~{fragments :: header}"></header>

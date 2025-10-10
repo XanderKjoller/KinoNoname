@@ -55,7 +55,7 @@ async function fetchBooking() {
 
             let roomInfo = document.createElement("div")
             roomInfo.classList.add("infoText")
-            roomInfo.innerText = "Room " + booking.show.room
+            roomInfo.innerText = "Room " + booking.show.room.roomID
             roomInfo.classList.add("room")
             info.appendChild(roomInfo)
 

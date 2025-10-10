@@ -182,6 +182,9 @@ async function bookTickets() {
     if(!seatsChosen){
         //write to user no seats chosen
     }
+    else {
+        window.location.href = "/Bookings";
+    }
 
 }
 
