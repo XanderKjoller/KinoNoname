@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
   <link rel="stylesheet" th:href="@{style.css}" />
+    <link rel="stylesheet" th:href="@{seatRStyle.css}" />
+
 
 </head>
 <style>
@@ -44,16 +46,16 @@
 <header style="width: 100%" th:insert="~{fragments :: header}"></header>
 
 <div style="display: flex; justify-content: space-between;">
-  <h1 id="title" th:text="${show.getMovie().getName()}"></h1>
-  <h2 id="timeframe" >16:30 - 18:01 Tir. 7 Okt.</h2>
+  <div id="title" class="title" th:text="${show.getMovie().getName()}"></div>
+  <div id="timeframe"  class="date">16:30 - 18:01 Tir. 7 Okt.</div>
 </div>
 <div style="display: flex; gap: 15px">
-  <p id="duration" >1 hour 31 min</p>
-  <p id="age" th:text="${show.getMovie().getAgeRating()}"></p>
+  <div id="duration" class="smallText">1 hour 31 min</div>
+  <div id="age" class="smallText" th:text="${show.getMovie().getAgeRating()}"></div>
 </div>
 <div style="position: relative; display: flex; align-items: center; height: 50px;">
-    <h1 style="margin: 0;">Choose Seats</h1>
-    <h2 id="timer" style="position: absolute; left: 50%; transform: translateX(-50%); margin: 0;"></h2>
+    <div style="margin: 0;" class="chooseSeat">Choose Seats</div>
+    <div id="timer" style="position: absolute; left: 50%; transform: translateX(-50%); margin: 0;"></div>
 </div>
 
 <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
@@ -66,7 +68,7 @@
 
   </div>
 </div>
-<button id="bookButton">Book Tickets</button>
+<button id="bookButton" class="bookButton">Book Tickets</button>
 </body>
 <script type="module" th:src="@{/js/seatReservation.js}"></script>
 </html>
