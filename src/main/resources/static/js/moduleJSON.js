@@ -1,5 +1,17 @@
-function fetchAnyUrl(url) {
-    return fetch(url).then(response => response.json())
+async function fetchAnyUrl(url) {
+    const response = await fetch(url, { credentials: "include" });
+
+    if (!response.ok) {
+        console.log("Request failed:", response.status, url);
+        return null; // <- don’t try to parse empty body
+    }
+
+    try {
+        return await response.json();
+    } catch (err) {
+        console.error("Failed to parse JSON from", url, err);
+        return null;
+    }
 }
 
 async function postObjectAsJson(url, object, httpVerbum) {
@@ -26,8 +38,9 @@ async function fetchUser(){
     let user;
     console.log(window.location.origin + "/me")
     user = await fetchAnyUrl(window.location.origin + "/me");
-    if ( user.length < 1) {
+    if ( user == null) {
         console.log("no user")
+        return null
     }
     return user
 }

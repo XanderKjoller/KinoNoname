@@ -41,13 +41,15 @@
 
 </style>
 <body >
+<header style="width: 100%" th:insert="~{fragments :: header}"></header>
+
 <div style="display: flex; justify-content: space-between;">
-  <h1 id="title">Ternet Ninja 3</h1>
-  <h2 id="timeframe">16:30 - 18:01 Tir. 7 Okt.</h2>
+  <h1 id="title" th:text="${show.getMovie().getName()}"></h1>
+  <h2 id="timeframe" >16:30 - 18:01 Tir. 7 Okt.</h2>
 </div>
 <div style="display: flex; gap: 15px">
-  <p id="duration">1 hour 31 min</p>
-  <p id="age">Allowed for children over the age of 13</p>
+  <p id="duration" >1 hour 31 min</p>
+  <p id="age" th:text="${show.getMovie().getAgeRating()}"></p>
 </div>
 <div style="position: relative; display: flex; align-items: center; height: 50px;">
     <h1 style="margin: 0;">Choose Seats</h1>
@@ -64,6 +66,7 @@
 
   </div>
 </div>
+<button id="bookButton">Book Tickets</button>
 </body>
 <script type="module" th:src="@{/js/seatReservation.js}"></script>
 </html>
