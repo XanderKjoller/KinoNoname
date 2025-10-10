@@ -100,7 +100,7 @@ function displayMovies(movies) {
         movieDiv.appendChild(durationDiv);
 
         // Click to show details modal
-        movieDiv.addEventListener("click", () => showMovieDetails(movie));
+        movieDiv.addEventListener("click", () => window.location.href = "/showing/" + movie.movieID);
 
         moviesContainer.appendChild(movieDiv);
     });
