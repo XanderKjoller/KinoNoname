@@ -71,7 +71,11 @@ async function fetchBooking() {
             deleteButton.addEventListener("click", r => {deleteBooking(booking, bookingPage).then(r => {})})
             bookingPage.appendChild(deleteButton)
 
-
+            let snackButton = document.createElement("button")
+            snackButton.innerText = "Reserve Snack"
+            snackButton.classList.add("snackButton")
+            snackButton.addEventListener("click", r => {window.location.href = "/snackRedirect?bookingID=" + booking.bookingID;})
+            info.appendChild(snackButton)
         }
     }
     else {
@@ -90,5 +94,6 @@ async function deleteBooking(booking, bookingPage){
     if(status)
         bookingPage.remove()
 }
+
 
 fetchBooking().then(r => {})

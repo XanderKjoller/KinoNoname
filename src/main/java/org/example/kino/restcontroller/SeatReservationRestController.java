@@ -48,7 +48,7 @@ public class SeatReservationRestController {
 
         List<SeatReservation> reservedSeats = seatReservationRepository.findAll();
         for (int i = 0; i < reservedSeats.size(); i++) {
-            if(reservedSeats.get(i).getTimeLog() != null && reservedSeats.get(i).getTimeLog().isBefore(LocalDateTime.now().minus(1, ChronoUnit.MINUTES))
+            if(reservedSeats.get(i).getTimeLog() != null && reservedSeats.get(i).getTimeLog().isBefore(LocalDateTime.now().minus(10, ChronoUnit.MINUTES))
             ||  (loggedInUser!= null && reservedSeats.get(i).getUser() != null && reservedSeats.get(i).getUser().getUserID() == loggedInUser.getUserID())){
                 seatReservationRepository.delete(reservedSeats.get(i));
                 reservedSeats.remove(reservedSeats.get(i));
