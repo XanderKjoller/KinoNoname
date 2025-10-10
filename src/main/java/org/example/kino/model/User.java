@@ -2,6 +2,7 @@ package org.example.kino.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -27,12 +28,15 @@ public class User {
 
     // Relations
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Booking> bookings;
     
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<TimeSlot> timeSlots;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<SeatReservation> seatReservation; //Seats reserved.
 
     public User(String username, String mail, String password, String authority) {
