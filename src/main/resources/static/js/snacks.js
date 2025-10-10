@@ -54,7 +54,7 @@ async function loadSnacks() {
 
 async function handleFormSubmit(event) {
     event.preventDefault();
-
+    alert("Snack Added")
     const bookingID = parseInt(event.target.querySelector("#inpBookingID").value);
     const snackID = parseInt(event.target.querySelector("#inpSnackID").value);
 
@@ -112,7 +112,7 @@ function displaySnacks(snacks) {
         // Snack title
         const titleDiv = document.createElement('div');
         titleDiv.className = "snack-title";
-        titleDiv.textContent = snack.name;
+        titleDiv.textContent = snack.name + " " + snack.price + " kr.";
 
         // Append elements to snackDiv
         snackDiv.appendChild(img);
@@ -168,8 +168,9 @@ function displaySnacks(snacks) {
             snackDiv.appendChild(subConHeader);
 
             //Click on it to create a snackReservation
-            snackDiv.addEventListener("click", () => button.click());
+            snackDiv.addEventListener("click", () => {button.click()
 
+            });
 
         }
 

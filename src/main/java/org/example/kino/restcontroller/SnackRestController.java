@@ -3,9 +3,11 @@ package org.example.kino.restcontroller;
 import jakarta.servlet.http.HttpSession;
 import org.example.kino.model.Booking;
 import org.example.kino.model.Snack;
+import org.example.kino.model.SnackReservation;
 import org.example.kino.model.User;
 import org.example.kino.repositories.BookingRepository;
 import org.example.kino.repositories.SnackRepository;
+import org.example.kino.repositories.SnackReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,9 @@ public class SnackRestController {
     SnackRepository snackRepository;
     @Autowired
     BookingRepository bookingRepository;
+
+    @Autowired
+    SnackReservationRepository snackReservationRepository;
     @PostMapping("/snacks")
     public List<Snack> snacks (){
         return snackRepository.findAll();
@@ -38,6 +43,7 @@ public class SnackRestController {
         }*/
         return ResponseEntity.ok(booking);
     }
+
 
     @PostMapping("/addSnack")
     public ResponseEntity<?> addSnack(@RequestBody Snack newSnack) {
