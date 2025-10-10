@@ -28,10 +28,14 @@ public class SnackRestController {
 
     @GetMapping("/b")
     public ResponseEntity<Booking> bookingResponseEntity(HttpSession session) {
-        Booking booking = (Booking) session.getAttribute("booking");
-        if (booking == null) {
+
+        int bookingID = (int) session.getAttribute("bookingID");
+        Booking booking = bookingRepository.findById(bookingID).orElse(null);
+        System.out.println("booking: " + booking);
+        /*Optional<Booking> bookingSaved = bookingRepository.findById(booking.getBookingID());
+        if (bookingSaved.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        }*/
         return ResponseEntity.ok(booking);
     }
 

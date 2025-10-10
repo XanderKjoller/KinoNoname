@@ -2,6 +2,7 @@ package org.example.kino.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.example.kino.model.Booking;
 import org.example.kino.repositories.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,8 +30,10 @@ public class SnackController {
     @GetMapping("/snackRedirect")
     public String snackRedirect(HttpServletRequest request, HttpSession session) {
         int bookingID = Integer.parseInt(request.getParameter("bookingID"));
-        session.setAttribute("booking", bookingRepository.findById(bookingID));
-        return "redirect:snacks";
+        //System.out.println("bookingID: " + bookingID);
+        //Booking booking = bookingRepository.findById(bookingID).get();
+        session.setAttribute("bookingID", bookingID);
+        return "redirect:/snacks";
     }
 
 
