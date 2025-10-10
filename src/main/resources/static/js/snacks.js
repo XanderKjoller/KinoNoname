@@ -1,8 +1,8 @@
-import { fetchAnyUrl, fetchUser2, isEmployee } from "./moduleJSON.js";
+import {fetchAnyUrl} from "./moduleJSON.js";
 
 console.log("snacks.js loaded");
 
-let user
+let isUserEmployee
 
 const snacksContainer = document.getElementById("snacks");
 const searchInput = document.querySelector(".filters input");
@@ -11,17 +11,36 @@ const SNACK_URL = window.location.origin+"/snacks";
 
 let allSnacks = [];
 
+let booking=0
+
+
 // Load snacks from backend
 async function fetchAnyUrl2(url) {
     const response = await fetch(url, { method: 'POST' });
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    isUserEmployee = false
+    try {
+        const user = await fetchAnyUrl("/me");
+        console.log(user.authority)
+        isUserEmployee = user.authority === "EMPLOYEE"
+    } catch (error) {
+        console.log("not logged in or not employee")
+    }
+
+    booking= await fetchAnyUrl("/b")
+
     return await response.json();
 }
+
+
+
 async function loadSnacks() {
-    //user = await fetchUser2()
+
 
     try {
         const snacks = await fetchAnyUrl2(SNACK_URL);
+
+
         allSnacks = snacks;
         console.log("Snacks loaded:", snacks);
 
@@ -33,6 +52,42 @@ async function loadSnacks() {
     }
 }
 
+async function handleFormSubmit(event) {
+    event.preventDefault();
+    alert("Snack Added")
+    const bookingID = parseInt(event.target.querySelector("#inpBookingID").value);
+    const snackID = parseInt(event.target.querySelector("#inpSnackID").value);
+
+    const snackReservation = {
+        booking: { bookingID },
+        snack: { snackID }
+    };
+
+
+    try {
+        //post to database
+        const response = await fetch("/addSnackReservation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(snackReservation),
+        });
+
+        if (!response.ok) {
+            throw new Error("post snackReservation failed ");
+        }
+
+        const data = await response.json();
+        console.log(data);
+        console.log("Success")
+
+       // alert("new snackReservation to booking"+snackReservation.bookingID+" successful!");
+    } catch (err) {
+
+        console.error(err);
+        alert(err.message);
+    }
+
+}
 
 // Display snack grid
 function displaySnacks(snacks) {
@@ -57,46 +112,98 @@ function displaySnacks(snacks) {
         // Snack title
         const titleDiv = document.createElement('div');
         titleDiv.className = "snack-title";
-        titleDiv.textContent = snack.name;
+        titleDiv.textContent = snack.name + " " + snack.price + " kr.";
 
         // Append elements to snackDiv
         snackDiv.appendChild(img);
         snackDiv.appendChild(titleDiv);
+        if(isUserEmployee){
+            snackDiv.addEventListener("click", () => window.location.href = window.location.origin+ "/snack/"+snack.snackID);
+        }else {
+            let bookingID = booking.bookingID
 
-        // Click to show details modal
-            snackDiv.addEventListener("click", () => window.location.href = window.location.origin+ "/snack/"+snack.id
-            );
+            // Create the form
+            const subConHeader = document.createElement("form");
+            subConHeader.className = "subConHeader";
+            subConHeader.action = "/addSnackReservation";
+            subConHeader.method = "post";
+            subConHeader.addEventListener("submit", handleFormSubmit);
+
+            // --- Snack ID field ---
+            const snackGroup = document.createElement("div");
+            snackGroup.className = "form-group";
+
+            const snackIdElement = document.createElement("input");
+            snackIdElement.type = "number";
+            snackIdElement.id = "inpSnackID";
+            snackIdElement.name = "inpSnackID";
+            snackIdElement.value = snack.snackID;
+            snackIdElement.hidden=true
+
+            snackGroup.appendChild(snackIdElement);
+
+            // --- Booking ID field ---
+            const bookingGroup = document.createElement("div");
+            bookingGroup.className = "form-group";
+
+            const bookingIdElement = document.createElement("input");
+            bookingIdElement.type = "number";
+            bookingIdElement.id = "inpBookingID";
+            bookingIdElement.name = "inpBookingID";
+            bookingIdElement.value = bookingID;
+            bookingIdElement.hidden=true
+
+            bookingGroup.appendChild(bookingIdElement);
+
+            // --- Submit button ---
+            const button = document.createElement("button");
+            button.type = "submit";
+            button.textContent = "x";
+            button.hidden = true;
+
+            subConHeader.appendChild(snackGroup);
+            subConHeader.appendChild(bookingGroup);
+            subConHeader.appendChild(button);
+
+            snackDiv.appendChild(subConHeader);
+
+            //Click on it to create a snackReservation
+            snackDiv.addEventListener("click", () => {button.click()
+
+            });
+
+        }
+
+
 
         snacksContainer.appendChild(snackDiv);
+            // If last element, add a "Load More" snack
+            if (index === array.length - 1) {
+                if(isUserEmployee){
+                    const newSnackDiv = document.createElement("div");
+                    newSnackDiv.classList.add("snack"); // same styling as snacks
+
+                    const _img = document.createElement("img");
+                    _img.src = "https://plus.unsplash.com/premium_photo-1681400545953-0ba00cfa7926?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGNyZWF0ZSUyMG5ld3xlbnwwfHwwfHx8MA%3D%3D"; // placeholder or custom image
+                    _img.alt = "Add new Snack";
+                    _img.style.display = "flex";
 
 
 
-        // If last element, add a "Load More" snack
-        if (index === array.length - 1) {
-                const newSnackDiv = document.createElement("div");
-                newSnackDiv.classList.add("snack"); // same styling as snacks
+                    const _imgTitle = document.createElement("div");
+                    _imgTitle.className = "snack-title";
+                    _imgTitle.textContent = "Add new Snack";
 
-                const _img = document.createElement("img");
-                _img.src = "https://plus.unsplash.com/premium_photo-1681400545953-0ba00cfa7926?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGNyZWF0ZSUyMG5ld3xlbnwwfHwwfHx8MA%3D%3D"; // placeholder or custom image
-                _img.alt = "Add new Snack";
-                _img.style.display = "flex";
-
-
-
-                const _imgTitle = document.createElement("div");
-                _imgTitle.className = "snack-title";
-                _imgTitle.textContent = "Add new Snack";
-
-                newSnackDiv.appendChild(_img);
-                newSnackDiv.appendChild(_imgTitle);
-                _img.addEventListener("click", ()=>{
-                    window.location.href = window.location.origin+ "/snack"
-                })
+                    newSnackDiv.appendChild(_img);
+                    newSnackDiv.appendChild(_imgTitle);
+                    _img.addEventListener("click", ()=>{
+                        window.location.href = window.location.origin+ "/snack"
+                    })
 
 
-                snacksContainer.appendChild(newSnackDiv);
+                    snacksContainer.appendChild(newSnackDiv);
+                }
             }
-
 
     }
 

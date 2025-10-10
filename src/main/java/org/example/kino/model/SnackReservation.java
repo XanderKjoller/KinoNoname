@@ -9,7 +9,7 @@ public class SnackReservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int snackReservationID;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "bookingID")
     private Booking booking;
 

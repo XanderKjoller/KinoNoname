@@ -1,7 +1,13 @@
 package org.example.kino.restcontroller;
 
+import jakarta.servlet.http.HttpSession;
+import org.example.kino.model.Booking;
 import org.example.kino.model.Snack;
+import org.example.kino.model.SnackReservation;
+import org.example.kino.model.User;
+import org.example.kino.repositories.BookingRepository;
 import org.example.kino.repositories.SnackRepository;
+import org.example.kino.repositories.SnackReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +20,28 @@ import java.util.Optional;
 public class SnackRestController {
     @Autowired
     SnackRepository snackRepository;
+    @Autowired
+    BookingRepository bookingRepository;
+
+    @Autowired
+    SnackReservationRepository snackReservationRepository;
     @PostMapping("/snacks")
     public List<Snack> snacks (){
         return snackRepository.findAll();
+    }
+
+
+    @GetMapping("/b")
+    public ResponseEntity<Booking> bookingResponseEntity(HttpSession session) {
+
+        int bookingID = (int) session.getAttribute("bookingID");
+        Booking booking = bookingRepository.findById(bookingID).orElse(null);
+        System.out.println("booking: " + booking);
+        /*Optional<Booking> bookingSaved = bookingRepository.findById(booking.getBookingID());
+        if (bookingSaved.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }*/
+        return ResponseEntity.ok(booking);
     }
 
 

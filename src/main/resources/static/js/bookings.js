@@ -4,6 +4,7 @@ const bookingSpace = document.getElementById("bookingSpace")
 
 let bookings = [];
 //let htmlBookings = []
+let snacks = [];
 
 const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -76,6 +77,39 @@ async function fetchBooking() {
             snackButton.classList.add("snackButton")
             snackButton.addEventListener("click", r => {window.location.href = "/snackRedirect?bookingID=" + booking.bookingID;})
             info.appendChild(snackButton)
+
+            let snackDiv = document.createElement("div")
+            bookingPage.appendChild(snackDiv)
+            fetchSnacks(booking.bookingID).then(r =>{
+
+                for (let i = 0; i < snacks.length; i++){
+                    let snackContainer = document.createElement("div")
+                    snackContainer.classList.add("snackContainer");
+                    snackDiv.appendChild(snackContainer)
+
+                    console.log(snacks[i])
+                    let snackText = document.createElement("div")
+                    snackText.innerText = snacks[i].snack.name + ", " + snacks[i].snack.price + " kr.   ";
+                    console.log("snacks: " + snacks[i].snackReservationID)
+                    snackContainer.appendChild(snackText)
+
+                    let snackX = document.createElement("div")
+                    snackX.style.paddingLeft = "5%"
+                    snackX.style.color = "red"
+                    snackX.innerText = "X"
+                    snackContainer.appendChild(snackX)
+
+                    let snack = snacks[i];
+                    snackX.addEventListener("click", () => {
+
+                        console.log(snack.snackReservationID)
+                        deleteSnack(snack.snackReservationID)
+                        snackContainer.remove();
+                    });
+
+                }
+            })
+
         }
     }
     else {
@@ -94,6 +128,12 @@ async function deleteBooking(booking, bookingPage){
     if(status)
         bookingPage.remove()
 }
+async function fetchSnacks(bookingID){
+    snacks = await fetchAnyUrl(window.location.origin + "/snackReservationData?bookingID=" + bookingID);
+}
+async function deleteSnack(snack){
+    const [body, status] = await postObjectAsJson(window.location.origin + "/DeleteSnack", { snackReservationID: snack }, "DELETE")
 
+}
 
 fetchBooking().then(r => {})
