@@ -41,6 +41,38 @@ async function loadSnacks() {
     }
 }
 
+async function handleFormSubmit(event) {
+    event.preventDefault();
+
+    const snackReservation = {
+        booking: { bookingID: parseInt(document.getElementById("inpBookingID").value) },
+        snack: { snackID: parseInt(document.getElementById("inpSnackID").value) }
+    };
+
+
+    try {
+        //post to database
+        const response = await fetch("/addSnackReservation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(snackReservation),
+        });
+
+        if (!response.ok) {
+            throw new Error("post snackReservation failed ");
+        }
+
+        const data = await response.json();
+        console.log(data);
+
+        alert("new snackReservation to booking"+snackReservation.bookingID+" successful!");
+    } catch (err) {
+
+        console.error(err);
+        alert(err.message);
+    }
+
+}
 
 // Display snack grid
 function displaySnacks(snacks) {
@@ -70,8 +102,46 @@ function displaySnacks(snacks) {
         // Append elements to snackDiv
         snackDiv.appendChild(img);
         snackDiv.appendChild(titleDiv);
+        if(isUserEmployee){
+            snackDiv.addEventListener("click", () => window.location.href = window.location.origin+ "/snack/"+snack.snackID);
+        }else {
+            let bookingID = 1
+            const subConHeader = document.createElement("form")
+            subConHeader.className = "subConHeader"
+            subConHeader.action = "/addSnackReservation";
+            subConHeader.method = "post";
 
-        // Click to show details modal
+            const snackIdElement = document.createElement("inpSnackID")
+            snackIdElement.hidden= false;
+            snackIdElement.value = snack.snackID
+            snackIdElement.name ="snackID"
+
+            const bookingIdElement = document.createElement("inpBookingID")
+            bookingIdElement.hidden= false;
+            bookingIdElement.value = bookingID
+            bookingIdElement.name ="bookingID"
+
+            const button = document.createElement("button")
+            button.innerHTML = "x";
+            button.type="submit";
+            button.hidden=true
+
+            subConHeader.addEventListener("submit", handleFormSubmit);
+
+
+            subConHeader.appendChild(snackIdElement)
+            subConHeader.appendChild(bookingIdElement)
+            subConHeader.appendChild(button)
+            snackDiv.appendChild(subConHeader)
+
+            snackDiv.addEventListener("click", () => button.click());
+
+        }
+
+
+
+        snacksContainer.appendChild(snackDiv);
+            // If last element, add a "Load More" snack
             if (index === array.length - 1) {
                 if(isUserEmployee){
                     const newSnackDiv = document.createElement("div");
@@ -97,17 +167,7 @@ function displaySnacks(snacks) {
 
                     snacksContainer.appendChild(newSnackDiv);
                 }
-                }
-
-
-            snackDiv.addEventListener("click", () => window.location.href = window.location.origin+ "/snack/"+snack.snackID
-            );
-
-
-
-        snacksContainer.appendChild(snackDiv);
-            // If last element, add a "Load More" snack
-
+            }
 
     }
 

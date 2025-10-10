@@ -20,6 +20,7 @@ public class SnackRestController {
     }
 
 
+
     @PostMapping("/addSnack")
     public ResponseEntity<?> addSnack(@RequestBody Snack newSnack) {
         // Check if a snack with the same name already exists
