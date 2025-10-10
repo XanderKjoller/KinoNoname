@@ -2,9 +2,11 @@ package org.example.kino.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -41,8 +43,9 @@ public class Booking {
     @JoinColumn(name = "userID")
     private User user;
 
-    @OneToOne(mappedBy = "booking")
-    private SnackReservation snackReservation;
+    @OneToMany(mappedBy = "booking")
+    @JsonIgnore
+    private List<SnackReservation> snackReservation;
 
     public Show getShow() {
         return show;
@@ -60,11 +63,11 @@ public class Booking {
         this.user = user;
     }
 
-    public SnackReservation getSnackReservation() {
+    public List<SnackReservation> getSnackReservation() {
         return snackReservation;
     }
 
-    public void setSnackReservation(SnackReservation snackReservation) {
+    public void setSnackReservation(List<SnackReservation> snackReservation) {
         this.snackReservation = snackReservation;
     }
 

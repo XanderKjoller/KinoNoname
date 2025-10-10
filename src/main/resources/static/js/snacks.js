@@ -44,9 +44,12 @@ async function loadSnacks() {
 async function handleFormSubmit(event) {
     event.preventDefault();
 
+    const bookingID = parseInt(event.target.querySelector("#inpBookingID").value);
+    const snackID = parseInt(event.target.querySelector("#inpSnackID").value);
+
     const snackReservation = {
-        booking: { bookingID: parseInt(document.getElementById("inpBookingID").value) },
-        snack: { snackID: parseInt(document.getElementById("inpSnackID").value) }
+        booking: { bookingID },
+        snack: { snackID }
     };
 
 
@@ -64,8 +67,9 @@ async function handleFormSubmit(event) {
 
         const data = await response.json();
         console.log(data);
+        console.log("Success")
 
-        alert("new snackReservation to booking"+snackReservation.bookingID+" successful!");
+       // alert("new snackReservation to booking"+snackReservation.bookingID+" successful!");
     } catch (err) {
 
         console.error(err);
@@ -105,36 +109,56 @@ function displaySnacks(snacks) {
         if(isUserEmployee){
             snackDiv.addEventListener("click", () => window.location.href = window.location.origin+ "/snack/"+snack.snackID);
         }else {
-            let bookingID = 1
-            const subConHeader = document.createElement("form")
-            subConHeader.className = "subConHeader"
+            let bookingID = 1;
+
+            // Create the form
+            const subConHeader = document.createElement("form");
+            subConHeader.className = "subConHeader";
             subConHeader.action = "/addSnackReservation";
             subConHeader.method = "post";
-
-            const snackIdElement = document.createElement("inpSnackID")
-            snackIdElement.hidden= false;
-            snackIdElement.value = snack.snackID
-            snackIdElement.name ="snackID"
-
-            const bookingIdElement = document.createElement("inpBookingID")
-            bookingIdElement.hidden= false;
-            bookingIdElement.value = bookingID
-            bookingIdElement.name ="bookingID"
-
-            const button = document.createElement("button")
-            button.innerHTML = "x";
-            button.type="submit";
-            button.hidden=true
-
             subConHeader.addEventListener("submit", handleFormSubmit);
 
+            // --- Snack ID field ---
+            const snackGroup = document.createElement("div");
+            snackGroup.className = "form-group";
 
-            subConHeader.appendChild(snackIdElement)
-            subConHeader.appendChild(bookingIdElement)
-            subConHeader.appendChild(button)
-            snackDiv.appendChild(subConHeader)
+            const snackIdElement = document.createElement("input");
+            snackIdElement.type = "number";
+            snackIdElement.id = "inpSnackID";
+            snackIdElement.name = "inpSnackID";
+            snackIdElement.value = snack.snackID;
+            snackIdElement.hidden=true
 
+            snackGroup.appendChild(snackIdElement);
+
+            // --- Booking ID field ---
+            const bookingGroup = document.createElement("div");
+            bookingGroup.className = "form-group";
+
+            const bookingIdElement = document.createElement("input");
+            bookingIdElement.type = "number";
+            bookingIdElement.id = "inpBookingID";
+            bookingIdElement.name = "inpBookingID";
+            bookingIdElement.value = bookingID;
+            bookingIdElement.hidden=true
+
+            bookingGroup.appendChild(bookingIdElement);
+
+            // --- Submit button ---
+            const button = document.createElement("button");
+            button.type = "submit";
+            button.textContent = "x";
+            button.hidden = true;
+
+            subConHeader.appendChild(snackGroup);
+            subConHeader.appendChild(bookingGroup);
+            subConHeader.appendChild(button);
+
+            snackDiv.appendChild(subConHeader);
+
+            //Click on it to create a snackReservation
             snackDiv.addEventListener("click", () => button.click());
+
 
         }
 
