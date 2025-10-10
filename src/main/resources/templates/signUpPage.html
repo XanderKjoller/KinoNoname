@@ -7,38 +7,52 @@
 </head>
 <body>
 
-<div class="signup-container">
+<div class="form-container">
     <h1>Sign Up</h1>
     <form id="signupForm" method="POST" action="/signup">
-        <label for="inpUsername">Username:</label>
-        <input type="text" id="inpUsername" name="username" required>
 
-        <label for="inpPassword">Password:</label>
-        <input type="password" id="inpPassword" name="password" required>
+        <div class="form-group">
+            <label for="inpUsername">Username:</label>
+            <input type="text" id="inpUsername" name="username" required>
+        </div>
 
-        <label for="inpMail">Mail:</label>
-        <input type="text" id="inpMail" name="mail" required>
+        <div class="form-group">
+            <label for="inpPassword">Password:</label>
+            <input type="password" id="inpPassword" name="password" required>
+        </div>
 
-        <label for="ddAuthority">Authority:</label>
-        <select name="userType" id="ddAuthority" required>
-            <option value="employee">employee</option>
-            <option selected value="customer">costumer</option>
-        </select>
+        <div class="form-group">
+            <label for="inpMail">Mail:</label>
+            <input type="text" id="inpMail" name="mail" required>
+        </div>
 
-        <button type="submit">Create Account</button>
+        <div class="form-group">
+            <label for="ddAuthority">Authority:</label>
+            <select name="userType" id="ddAuthority" required>
+                <option value="employee">employee</option>
+                <option selected value="customer">customer</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button type="submit">Create Account</button>
+        </div>
     </form>
+
     <form id="btn" th:action="@{/login}">
-        <button type="submit" title="login">login</button>
+        <div class="form-group">
+            <button type="submit" title="login">Login</button>
+        </div>
     </form>
 </div>
 
 </body>
+
 <script>
     // Fetch utility function
     function fetchAnyUrl(url) {
         return fetch(url)
-            .then(response => {return response.json();
-            })
+            .then(response => response.json())
             .catch(err => {
                 console.error("Fetch failed:", err);
                 return null;
@@ -60,7 +74,6 @@
     }
 
     console.log("signUpUser");
-
     const urlSignUp = window.location.origin + "/signUp";
 
     // Disable or enable dropdown option based on user authority
@@ -73,14 +86,12 @@
             return;
         }
 
-        // If no user or authority, disable "employee"
         if (!user || !user.authority) {
             optionToDisable.disabled = true;
             console.log("Disabled 'employee' option (no user/authority)");
             return;
         }
 
-        // Check user's authority
         const authority = user.authority.toUpperCase();
         console.log("User authority:", authority);
 
@@ -93,11 +104,6 @@
         }
     }
 
-
-
-
-
-    // Initialize form and event listener
     document.addEventListener('DOMContentLoaded', function() {
         checkUserCustomerForThisOption();
 
@@ -106,45 +112,34 @@
     });
 
     async function handleFormSubmit(event) {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault();
 
-        // Collect user data from the form
         const user = {
             username: document.getElementById("inpUsername").value,
             mail: document.getElementById("inpMail").value,
             password: document.getElementById("inpPassword").value,
             authority: document.getElementById("ddAuthority").value
-
         };
 
-
         try {
-            // Send the data to the backend via fetch
             const response = await fetch(urlSignUp, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(user),
-
             });
 
-            // Check if the response is successful
             if (!response.ok) {
                 throw new Error("SignUp failed: " + response.status);
             }
 
-            // Parse the response JSON
             const data = await response.json();
             console.log(data);
 
-
             alert("SignUp successful!");
-
         } catch (err) {
-            // Handle any errors
             console.error(err);
             alert(err.message);
         }
     }
-
 </script>
 </html>

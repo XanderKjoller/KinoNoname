@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{style.css}" />
+
+</head>
+<body >
+<div class="form-container">
+    <h1>Add Snack</h1>
+
+    <form id="snackForm" method="POST" action="/snacks">
+
+        <div class="form-group">
+            <label for="inpName">Snack Name:</label>
+            <input type="text" id="inpName" name="name" required placeholder="Enter snack name">
+        </div>
+
+        <div class="form-group">
+            <label for="inpPrice">Price:</label>
+            <input type="number" id="inpPrice" name="price" required placeholder="Enter price (DKK)">
+        </div>
+
+        <div class="form-group">
+            <label for="inpImage">Image URL:</label>
+            <input type="text" id="inpImage" name="image" required placeholder="Enter image URL">
+        </div>
+
+        <div class="form-group">
+            <button type="submit">Save Snack</button>
+        </div>
+    </form>
+</div>
+</body>
+<script type="module" th:src="@{/js/snack.js}"></script>
+</html>
