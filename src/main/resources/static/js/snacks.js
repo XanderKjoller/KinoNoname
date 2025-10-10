@@ -1,4 +1,4 @@
-import { fetchAnyUrl, fetchUser2, isEmployee } from "./moduleJSON.js";
+import {fetchAnyUrl} from "./moduleJSON.js";
 
 console.log("snacks.js loaded");
 
@@ -10,6 +10,9 @@ const searchInput = document.querySelector(".filters input");
 const SNACK_URL = window.location.origin+"/snacks";
 
 let allSnacks = [];
+
+let booking=0
+
 
 // Load snacks from backend
 async function fetchAnyUrl2(url) {
@@ -23,13 +26,21 @@ async function fetchAnyUrl2(url) {
     } catch (error) {
         console.log("not logged in or not employee")
     }
+
+    booking= await fetchAnyUrl("/b")
+
     return await response.json();
 }
+
+
+
 async function loadSnacks() {
 
 
     try {
         const snacks = await fetchAnyUrl2(SNACK_URL);
+
+
         allSnacks = snacks;
         console.log("Snacks loaded:", snacks);
 
@@ -109,7 +120,7 @@ function displaySnacks(snacks) {
         if(isUserEmployee){
             snackDiv.addEventListener("click", () => window.location.href = window.location.origin+ "/snack/"+snack.snackID);
         }else {
-            let bookingID = 1;
+            let bookingID = booking.bookingID
 
             // Create the form
             const subConHeader = document.createElement("form");

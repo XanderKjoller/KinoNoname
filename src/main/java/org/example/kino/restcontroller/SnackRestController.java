@@ -1,6 +1,10 @@
 package org.example.kino.restcontroller;
 
+import jakarta.servlet.http.HttpSession;
+import org.example.kino.model.Booking;
 import org.example.kino.model.Snack;
+import org.example.kino.model.User;
+import org.example.kino.repositories.BookingRepository;
 import org.example.kino.repositories.SnackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,12 +18,22 @@ import java.util.Optional;
 public class SnackRestController {
     @Autowired
     SnackRepository snackRepository;
+    @Autowired
+    BookingRepository bookingRepository;
     @PostMapping("/snacks")
     public List<Snack> snacks (){
         return snackRepository.findAll();
     }
 
 
+    @GetMapping("/b")
+    public ResponseEntity<Booking> bookingResponseEntity(HttpSession session) {
+        Booking booking = (Booking) session.getAttribute("booking");
+        if (booking == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(booking);
+    }
 
     @PostMapping("/addSnack")
     public ResponseEntity<?> addSnack(@RequestBody Snack newSnack) {
