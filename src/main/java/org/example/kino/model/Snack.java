@@ -1,11 +1,15 @@
 package org.example.kino.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "Snack")
+
 public class Snack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +22,7 @@ public class Snack {
 
 
     @OneToMany(mappedBy = "snack")
+    @JsonIgnore
     private List<SnackReservation> snackReservations;
 
     public int getSnackID() {

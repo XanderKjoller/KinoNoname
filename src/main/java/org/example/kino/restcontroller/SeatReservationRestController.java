@@ -1,10 +1,14 @@
 package org.example.kino.restcontroller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import jakarta.websocket.Session;
+import org.example.kino.model.Booking;
 import org.example.kino.model.SeatReservation;
 import org.example.kino.model.Show;
 import org.example.kino.model.User;
+import org.example.kino.repositories.BookingRepository;
 import org.example.kino.repositories.SeatReservationRepository;
 import org.example.kino.repositories.ShowRepository;
 import org.example.kino.repositories.UserRepository;
@@ -30,13 +34,15 @@ public class SeatReservationRestController {
     SeatReservationRepository seatReservationRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @GetMapping("/SeatReservationData")
-    public List<SeatReservation> seatReservation(HttpSession session)  {
+    public List<SeatReservation> seatReservation(HttpServletRequest request, HttpSession session)  {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
         //ændre når man kan få det fra sidste side
-        int showID = 1;
+        int showID = Integer.parseInt(request.getParameter("showID"));
 
         List<SeatReservation> reservedSeats = seatReservationRepository.findAll();
         for (int i = 0; i < reservedSeats.size(); i++) {
@@ -59,6 +65,7 @@ public class SeatReservationRestController {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
         seatReservation.setTimeLog(LocalDateTime.now());
+        seatReservation.setShow(showRepository.findById(seatReservation.getShow().getShowID()).get());
         if(loggedInUser != null)
             seatReservation.setUser(userRepository.getReferenceById(loggedInUser.getUserID()));
         for (SeatReservation s : seatReservationRepository.findAll()) {
@@ -95,10 +102,37 @@ public class SeatReservationRestController {
     }
 
     @GetMapping("/GetShow")
-    public Show getShow(HttpSession session) {
+    public ResponseEntity<Show> getShow(HttpSession session) {
         if (session.getAttribute("showID") == null)
-            return null;
-        int showID = Integer.parseInt((String) session.getAttribute("showID"));
-        return showRepository.findById(showID).get();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        int showID = (int) session.getAttribute("showID");
+        return ResponseEntity.ok(showRepository.findById(showID).get());
+    }
+
+    @PostMapping("/BookTicket")
+    @Transactional
+    public ResponseEntity<Booking> bookTicket(@RequestBody Booking booking, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if(loggedInUser != null)
+            booking.setUser(userRepository.getReferenceById(loggedInUser.getUserID()));
+
+
+        booking.setShow(showRepository.findById(booking.getShow().getShowID()).get());
+        System.out.println(booking.getShow().getMovie().getPoster());
+        for (Booking b : bookingRepository.findAll()) {
+            if(b.getShow().getShowID() == booking.getShow().getShowID()
+                    && b.getSeatColumn() == booking.getSeatColumn()
+                    && b.getSeatRow() == booking.getSeatRow()) {
+                return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        Booking savedBooking = bookingRepository.save(booking);
+        if (savedBooking == null) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
+        }
+
     }
 }

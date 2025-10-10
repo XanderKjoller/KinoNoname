@@ -8,10 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Showtime") // Show is a reserved word in sql syntax thats why we use showtime instead
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "showID"
-)//this
+//this
 public class Show {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +21,6 @@ public class Show {
 
     @ManyToOne
     @JoinColumn(name = "roomID")
-    @JsonIdentityReference(alwaysAsId = true)
     private Room room;
 
     private LocalDateTime period;
