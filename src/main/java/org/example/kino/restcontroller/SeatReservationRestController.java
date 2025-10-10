@@ -3,6 +3,7 @@ package org.example.kino.restcontroller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
 import org.example.kino.model.SeatReservation;
+import org.example.kino.model.Show;
 import org.example.kino.model.User;
 import org.example.kino.repositories.SeatReservationRepository;
 import org.example.kino.repositories.ShowRepository;
@@ -91,5 +92,13 @@ public class SeatReservationRestController {
             seatReservationRepository.delete(seat);
             return new ResponseEntity<>(seat, HttpStatus.CREATED);
         }
+    }
+
+    @GetMapping("/GetShow")
+    public Show getShow(HttpSession session) {
+        if (session.getAttribute("showID") == null)
+            return null;
+        int showID = Integer.parseInt((String) session.getAttribute("showID"));
+        return showRepository.findById(showID).get();
     }
 }

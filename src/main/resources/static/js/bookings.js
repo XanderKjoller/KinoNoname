@@ -3,6 +3,7 @@ import {fetchAnyUrl, postObjectAsJson} from "./moduleJSON.js"
 const bookingSpace = document.getElementById("bookingSpace")
 
 let bookings = [];
+//let htmlBookings = []
 
 const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -60,15 +61,15 @@ async function fetchBooking() {
 
             let ticketInfo = document.createElement("div")
             ticketInfo.classList.add("infoText")
-            ticketInfo.innerText = "Ticked Code: " + booking.ticketCode
+            ticketInfo.innerText = "Ticket Code: " + booking.ticketCode
             info.appendChild(ticketInfo)
 
             let deleteButton = document.createElement("button")
             deleteButton.innerText = "Delete Ticket"
+            deleteButton.classList.add("deleteButton")
             //deleteButton.formAction = ""
-            /*deleteButton.addEventListener("click", {
-
-            })*/
+            deleteButton.addEventListener("click", r => {deleteBooking(booking, bookingPage).then(r => {})})
+            bookingPage.appendChild(deleteButton)
 
 
         }
@@ -82,6 +83,12 @@ function addZero(number){
     if(number < 10)
         number = "0" + number
     return number
+}
+async function deleteBooking(booking, bookingPage){
+    //console.log(JSON.stringify(booking));
+    const [body, status] = await postObjectAsJson(window.location.origin + "/DeleteBooking", { bookingID: booking.bookingID }, "DELETE")
+    if(status)
+        bookingPage.remove()
 }
 
 fetchBooking().then(r => {})

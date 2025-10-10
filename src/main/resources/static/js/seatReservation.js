@@ -3,6 +3,7 @@ import {fetchAnyUrl, postObjectAsJson,fetchUser} from "./moduleJSON.js"
 const seats = document.getElementById("seats");
 let reservedSeats = []
 let user
+let show
 
 const timerText = document.getElementById("timer")
 let timer = 0;
@@ -42,12 +43,14 @@ function clickedSeat(seat){
             deleteSeatReservation(seatReservation).then(r => {})
         }
         else  {
-            seat.isChosen = true
-            seat.classList.add("selected")
+
+
             saveSeatReservation(seatReservation).then(r => {
                 if(timer<= 0){
                     setTimer()
                 }
+                seat.isChosen = true
+                seat.classList.add("selected")
             })
         }
     }
@@ -104,6 +107,15 @@ async function fetchReservedSeats() {
     } else {
         console.log("no seat reservations")
     }
+}
+async function fetchShow(){
+    
+    show = await fetchAnyUrl(window.location.origin + "/GetShow");
+    if ( show == null) {
+        console.log("no user")
+    }
+    else
+        console.log(show)
 }
 
 async function saveSeatReservation(seatReservation) {

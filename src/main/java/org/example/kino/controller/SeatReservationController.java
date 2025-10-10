@@ -1,5 +1,7 @@
 package org.example.kino.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.example.kino.model.SeatReservation;
 import org.example.kino.repositories.SeatReservationRepository;
 import org.example.kino.repositories.ShowRepository;
@@ -13,9 +15,12 @@ import java.util.List;
 public class SeatReservationController {
 
     @GetMapping("/SeatReservation")
-    public String seatReservation()  {
+    public String seatReservation(HttpServletRequest request, HttpSession session)  {
+        int showID = Integer.parseInt(request.getParameter("showID"));
+        session.setAttribute("showID", showID);
         return "seatReservation";
     }
+
     @GetMapping("/Bookings")
     public String bookings()  {
         return "bookings";
