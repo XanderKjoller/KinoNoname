@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{style.css}" />
+    <link rel="stylesheet" th:href="@{/style.css}" />
 
 </head>
 <body >
+<header style="width: 100%" th:insert="~{fragments :: header}"></header>
 <div class="form-container">
     <h1>Update Snack</h1>
 
