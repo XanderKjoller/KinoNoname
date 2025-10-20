@@ -70,7 +70,7 @@ function fillshowings(showings, auth) {
                     subContainer.className = "subContainer";
                     subContainer.classList.add("showContainer")
                     subContainer.onclick = () => {
-                        window.location.href = "/SeatReservation?showID=" + movieID;
+                        window.location.href = "/SeatReservation?showID=" + show.showID;
                     };
 
 
@@ -101,7 +101,7 @@ function fillshowings(showings, auth) {
                     showTime.innerHTML = show.period.split("T")[1].substring(0, 5);
 
                     const showCinema = document.createElement("div");
-                    showCinema.innerHTML = "Cinema: " + show.room;
+                    showCinema.innerHTML = "Cinema: " + show.room.roomID;
 
                     const showPrice = document.createElement("div");
                     showPrice.innerHTML = "Price: " + show.price + " kr";
